@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MoviesApp</string>
+    <string name="movies">Movies</string>
+    <string name="tv">Tv</string>
+    <string name="people">People</string>
+    <string name="some_thing_went_wrong">Some thing went wrong</string>
+</resources>
