@@ -2,7 +2,8 @@ package com.ahmadshubita.moviesapp.ui.movies
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,16 +15,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.rememberAsyncImagePainter
 import com.ahmadshubita.moviesapp.ui.components.MainListCard
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultErrorLayout
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultProgressBar
@@ -49,7 +50,7 @@ fun MoviesScreen(
 ) {
 
 
-    val moviesScreenState by viewModel.state.collectAsState()
+    val moviesScreenState by viewModel.uiState.collectAsState()
     val isDarkTheme = viewModel.isDarkTheme.value
 
     Scaffold {
@@ -66,12 +67,9 @@ fun MoviesScreen(
                 ) {
                     CategoryTitle(title = "MOVIES", MaterialTheme.typography.titleLarge)
                     Spacer(modifier = Modifier.weight(1f))
-                    CustomSwitch(
-                        checked = isDarkTheme,
-                        onCheckedChange = { darkTheme ->
-                            viewModel.switchTheme(darkTheme)
-                        }
-                    )
+                    CustomSwitch(checked = isDarkTheme, onCheckedChange = { darkTheme ->
+                        viewModel.switchTheme(darkTheme)
+                    })
                 }
                 Column(
                     modifier = Modifier
@@ -91,11 +89,31 @@ fun MoviesScreen(
                                 onClick = {})
                         }
                     }
-                    CategoryTitle(
-                        title = "Now",
-                        MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        CategoryTitle(
+                            title = "Now",
+                            MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
+                        Text(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(dimens.space2))
+                                .clickable {
+                                    //TODO add view All action
+                                },
+                            text = "View All",
+                            textAlign = TextAlign.Start,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                     LazyHorizontalGrid(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -103,7 +121,8 @@ fun MoviesScreen(
                             .padding(start = dimens.space16), rows = GridCells.Fixed(1)
                     ) {
                         items(moviesScreenState.nowMoviesItems.size) { item ->
-                            MainListCard(moviesScreenState.nowMoviesItems[item].title ?: "",
+                            MainListCard(
+                                moviesScreenState.nowMoviesItems[item].title ?: "",
                                 moviesScreenState.nowMoviesItems[item].releaseYear,
                                 moviesScreenState.nowMoviesItems[item].rating,
                                 moviesScreenState.nowMoviesItems[item].posterImageUrl,
@@ -112,11 +131,31 @@ fun MoviesScreen(
                             )
                         }
                     }
-                    CategoryTitle(
-                        title = "Popular",
-                        MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        CategoryTitle(
+                            title = "Popular",
+                            MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
+                        Text(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(dimens.space2))
+                                .clickable {
+                                    //TODO add view All action
+                                },
+                            text = "View All",
+                            textAlign = TextAlign.Start,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                     LazyHorizontalGrid(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -126,7 +165,8 @@ fun MoviesScreen(
                         contentPadding = PaddingValues(6.dp)
                     ) {
                         items(moviesScreenState.popularMoviesItems.size) { item ->
-                            MainListCard(moviesScreenState.popularMoviesItems[item].title ?: "",
+                            MainListCard(
+                                moviesScreenState.popularMoviesItems[item].title ?: "",
                                 moviesScreenState.popularMoviesItems[item].releaseYear,
                                 moviesScreenState.popularMoviesItems[item].rating,
                                 moviesScreenState.popularMoviesItems[item].posterImageUrl,
@@ -152,11 +192,7 @@ fun CategoryTitle(
     color: Color = MaterialTheme.colorScheme.onBackground
 ) {
     Text(
-        text = title,
-        textAlign = TextAlign.Start,
-        style = textSize,
-        modifier = Modifier.padding(16.dp),
-        color = color
+        text = title, textAlign = TextAlign.Start, style = textSize, color = color
     )
 }
 
