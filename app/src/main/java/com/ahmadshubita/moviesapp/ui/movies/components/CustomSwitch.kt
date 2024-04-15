@@ -34,36 +34,30 @@ import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
 fun CustomSwitch(
-    width: Dp = 50.dp,
-    height: Dp = 28.dp,
-    checkedTrackColor: Color = MaterialTheme.colorScheme.primary,
-    uncheckedTrackColor: Color = MaterialTheme.colorScheme.onBackground,
-    gapBetweenThumbAndTrackEdge: Dp = 6.dp,
-    borderWidth: Dp = 2.dp,
-    cornerSize: Int = 50,
-    iconInnerPadding: Dp = 4.dp,
-    thumbSize: Dp = 20.dp
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
 ) {
 
     val interactionSource = remember {
         MutableInteractionSource()
     }
     var switchOn by remember {
-        mutableStateOf(true)
+        mutableStateOf(checked)
     }
     val alignment by animateAlignmentAsState(if (switchOn) 1f else -1f)
 
     Box(
         modifier = Modifier
-            .size(width = width, height = height)
+            .size(width = 50.dp, height = 28.dp)
             .border(
-                width = borderWidth,
-                color = if (switchOn) checkedTrackColor else uncheckedTrackColor,
-                shape = RoundedCornerShape(percent = cornerSize)
+                width = 2.dp,
+                color = if (switchOn) MaterialTheme.colorScheme.primary else  MaterialTheme.colorScheme.onBackground,
+                shape = RoundedCornerShape(percent = 50)
             )
             .clickable(
                 indication = null, interactionSource = interactionSource
             ) {
+                onCheckedChange(!switchOn)
                 switchOn = !switchOn
             }, contentAlignment = Alignment.Center
     ) {
@@ -71,7 +65,7 @@ fun CustomSwitch(
         Box(
             modifier = Modifier
                 .padding(
-                    start = gapBetweenThumbAndTrackEdge, end = gapBetweenThumbAndTrackEdge
+                    start = 6.dp, end = 6.dp
                 )
                 .fillMaxSize(), contentAlignment = alignment
         ) {
@@ -80,12 +74,12 @@ fun CustomSwitch(
                 imageVector = if (switchOn) Icons.Filled.Done else Icons.Filled.Close,
                 contentDescription = if (switchOn) "Enabled" else "Disabled",
                 modifier = Modifier
-                    .size(size = thumbSize)
+                    .size(size = 20.dp)
                     .background(
-                        color = if (switchOn) checkedTrackColor else uncheckedTrackColor,
+                        color = if (switchOn) MaterialTheme.colorScheme.primary else  MaterialTheme.colorScheme.onBackground,
                         shape = CircleShape
                     )
-                    .padding(all = iconInnerPadding),
+                    .padding(all = 4.dp),
                 tint = Color.White
             )
         }
@@ -104,6 +98,6 @@ private fun animateAlignmentAsState(
 @Composable
 private fun previewSwitch() {
     MoviesAppTheme {
-        CustomSwitch()
+        CustomSwitch(true, {})
     }
 }

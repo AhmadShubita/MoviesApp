@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.ahmadshubita.moviesapp.ui.core.navigation.MainNavDestination
+import com.ahmadshubita.moviesapp.ui.tv.TvScreen
 
 object TvDestination : MainNavDestination {
     override val route: String
@@ -20,6 +21,6 @@ fun NavGraphBuilder.tvGraph(navController: NavController, isBottomNavVisible: Mu
         LaunchedEffect(key1 = null ){
             isBottomNavVisible.value = true
         }
-        // TODO adding the route for movies screen and passing require data.
+        TvScreen(navController = navController)
     }
 }

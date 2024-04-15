@@ -8,46 +8,45 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.ahmadshubita.moviesapp.R
 
-val Roboto = FontFamily(
-    Font(R.font.roboto_medium, weight = FontWeight.Medium),
-    Font(R.font.roboto_medium, weight = FontWeight.SemiBold),
-    Font(R.font.roboto_bold, weight = FontWeight.Bold),
-    Font(R.font.roboto_light, weight = FontWeight.Light)
+val Helvetica = FontFamily(
+    Font(R.font.helvetica, weight = FontWeight.Bold),
+    Font(R.font.helvetica_light, weight = FontWeight.Light)
 )
 
 val Typography = Typography(
+    titleLarge = TextStyle(
+        fontFamily = Helvetica,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
     titleMedium = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.Medium,
+        fontFamily = Helvetica,
+        fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.5.sp
     ),
 
-    titleLarge = TextStyle(
-        fontFamily = Roboto,
+    titleSmall = TextStyle(
+        fontFamily = Helvetica,
         fontWeight = FontWeight.Bold,
-        fontSize = 18.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ), titleSmall = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
 
     bodyLarge = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.Medium,
+        fontFamily = Helvetica,
+        fontWeight = FontWeight.Light,
         fontSize = 14.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.5.sp
     ),
 
     labelSmall = TextStyle(
-        fontFamily = Roboto,
+        fontFamily = Helvetica,
         fontWeight = FontWeight.Light,
         fontSize = 12.sp,
         lineHeight = 22.sp,

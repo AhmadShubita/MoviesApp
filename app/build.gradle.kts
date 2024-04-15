@@ -29,11 +29,12 @@ android {
         }
         buildConfigField( "String", "API_KEY", "${properties["API_KEY"]}")
         buildConfigField( "String", "BASE_URL", "${properties["BASE_URL"]}")
+        buildConfigField( "String", "BASE_IMAGES_URL", "${properties["BASE_IMAGES_URL"]}")
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -75,6 +76,9 @@ dependencies {
 
     implementation(libs.compose.activity)
 
+    // Data Store
+    implementation(libs.androidx.datastore)
+
     // Lifecycle
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.compose)
@@ -100,6 +104,7 @@ dependencies {
 
     // Accompanist
     implementation(libs.accompanist.permission)
+    implementation(libs.accompanist.swiperefesh)
 
     // Glide // Coil
     implementation(libs.glide)

@@ -5,7 +5,7 @@ import com.ahmadshubita.moviesapp.ui.util.DatesUtil
 import com.google.gson.annotations.SerializedName
 import java.text.DecimalFormat
 
-data class Movie(
+data class Tv(
     @SerializedName("adult")
     val adult: Boolean ? = false,
     @SerializedName("backdrop_path")
@@ -14,22 +14,22 @@ data class Movie(
     val genreIds: List<Int>? = emptyList(),
     @SerializedName("id")
     val id: Int,
+    @SerializedName("origin_country")
+    val originCountry: List<String>? = emptyList(),
     @SerializedName("original_language")
     val originalLanguage: String? = "en-US",
-    @SerializedName("original_title")
-    val originalTitle: String ?= "",
+    @SerializedName("original_name")
+    val originalName: String ?= "",
     @SerializedName("overview")
     val overview: String? = "",
     @SerializedName("popularity")
     val popularity: Double ?,
     @SerializedName("poster_path")
     val posterPath: String? = "",
-    @SerializedName("release_date")
-    val releaseDate: String ? = "",
-    @SerializedName("title")
-    val title: String ? = "",
-    @SerializedName("video")
-    val video: Boolean ? =false,
+    @SerializedName("first_air_date")
+    val firstAirDate: String ? = "",
+    @SerializedName("name")
+    val name: String ? = "",
     @SerializedName("vote_average")
     val voteAverage: Double ? = 0.0,
     @SerializedName("vote_count")
@@ -39,5 +39,5 @@ data class Movie(
 
     val rating get() = DecimalFormat("#.#").format(voteAverage).toString()
 
-    val releaseYear get() = DatesUtil.getYear(releaseDate)
+    val releaseYear get() = DatesUtil.getYear(firstAirDate)
 }

@@ -26,16 +26,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.ahmadshubita.moviesapp.ui.bottombar.MainBottomBar
 import com.ahmadshubita.moviesapp.ui.bottombar.MainBottomNavigation
-import com.ahmadshubita.moviesapp.ui.bottombar.MoviesBottomBar
 import com.ahmadshubita.moviesapp.ui.core.navigation.MainNavHost
 import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
-fun MoviesApp() {
-    MoviesAppTheme {
+fun MoviesApp(isDarkTheme: Boolean) {
+    MoviesAppTheme(isDarkTheme = isDarkTheme) {
         Surface(
-            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.onTertiary
+            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
         ) {
             val bottomBarVisibility = rememberSaveable { (mutableStateOf(true)) }
 
@@ -49,13 +49,13 @@ fun MoviesApp() {
 
             Scaffold(modifier = Modifier.padding(),
                 containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.onTertiary,
+                contentColor = MaterialTheme.colorScheme.background,
                 bottomBar = {
                     AnimatedVisibility(visible = bottomBarVisibility.value,
                         enter = slideInVertically(initialOffsetY = { it }),
                         exit = slideOutVertically(targetOffsetY = { it }),
                         content = {
-                            MoviesBottomBar(
+                            MainBottomBar(
                                 onNavigateToDestination = mainBottomNavigation::navigateTo,
                                 currentDestination = currentDestination,
                             )
@@ -89,6 +89,6 @@ fun MoviesApp() {
 @Composable
 fun DefaultPreview() {
     MoviesAppTheme {
-        MoviesApp()
+        MoviesApp(isDarkTheme = false)
     }
 }
