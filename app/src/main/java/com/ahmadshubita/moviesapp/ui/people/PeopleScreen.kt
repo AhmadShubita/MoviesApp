@@ -29,7 +29,7 @@ import com.ahmadshubita.moviesapp.ui.theme.dimens
 fun PeopleScreen(
     navController: NavController, viewModel: PeopleViewModel = hiltViewModel()
 ) {
-    val peopleScreenState by viewModel.state.collectAsState()
+    val peopleScreenState by viewModel.uiState.collectAsState()
 
     Scaffold (modifier =
     Modifier

@@ -27,7 +27,7 @@ import com.ahmadshubita.moviesapp.ui.tv.viewmodel.TvViewModel
 fun TvScreen(
     navController: NavController, viewModel: TvViewModel = hiltViewModel()
 ) {
-    val tvScreenState by viewModel.state.collectAsState()
+    val tvScreenState by viewModel.uiState.collectAsState()
 
     Scaffold(
         modifier =
