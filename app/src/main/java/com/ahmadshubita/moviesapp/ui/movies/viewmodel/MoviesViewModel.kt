@@ -2,7 +2,8 @@ package com.ahmadshubita.moviesapp.ui.movies.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.ahmadshubita.moviesapp.BaseViewModel
+import com.ahmadshubita.moviesapp.base.BaseUiEffect
+import com.ahmadshubita.moviesapp.base.BaseViewModel
 import com.ahmadshubita.moviesapp.data.local.MainDataStore
 import com.ahmadshubita.moviesapp.data.remote.repo.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class MoviesViewModel @Inject constructor(
     private val mainRepository: MainRepository,
     private val dataStore: MainDataStore
-) : BaseViewModel<MoviesScreenState>(MoviesScreenState()) {
+) : BaseViewModel<MoviesScreenState, BaseUiEffect>(MoviesScreenState()) {
 
     var isDarkTheme = mutableStateOf(false)
 
@@ -32,7 +33,7 @@ class MoviesViewModel @Inject constructor(
             call2 = { mainRepository.getNowPlayingMovies(LANGUAGE_TYPE, 1) },
             call3 = { mainRepository.getPopularMovies(LANGUAGE_TYPE, 1) },
             onSuccess = { r1, r2, r3 ->
-                _state.update {
+                _uiState.update {
                     it.copy(
                         isLoadingState = mutableStateOf(false),
                         isErrorState = mutableStateOf(false),
