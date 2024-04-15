@@ -1,27 +1,26 @@
-package com.ahmadshubita.moviesapp
+package com.ahmadshubita.moviesapp.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ahmadshubita.moviesapp.data.models.MoviesResponse
-import com.ahmadshubita.moviesapp.data.remote.utils.NetworkException
-import com.ahmadshubita.moviesapp.data.remote.utils.NewsHiveException
-import com.ahmadshubita.moviesapp.data.remote.utils.NullDataException
-import com.ahmadshubita.moviesapp.data.remote.utils.RateLimitExceededException
-import com.ahmadshubita.moviesapp.data.remote.utils.UnAuthorizedException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<STATE>(initState: STATE): ViewModel() {
+abstract class BaseViewModel<STATE, UiEffect>(initState: STATE): ViewModel() {
 
-    protected val _state: MutableStateFlow<STATE> by lazy { MutableStateFlow(initState) }
-    val state = _state.asStateFlow()
+
+    protected val _uiState: MutableStateFlow<STATE> by lazy { MutableStateFlow(initState) }
+    val uiState = _uiState.asStateFlow()
+
+    protected val _uiEffect = MutableSharedFlow<UiEffect>()
+    val uiEffect = _uiEffect.asSharedFlow()
 
     fun <T> tryToExecute(
         call: suspend () -> T,
@@ -64,8 +63,14 @@ abstract class BaseViewModel<STATE>(initState: STATE): ViewModel() {
     ) {
         viewModelScope.launch {
             flow.collect { value ->
-                _state.update { it.updateState(value) }
+                _uiState.update { it.updateState(value) }
             }
         }
     }
+
+    protected fun triggerUiEffect(effect: UiEffect) {
+        viewModelScope.launch { _uiEffect.emit(effect) }
+    }
+
+    interface BaseUiEffect
 }
