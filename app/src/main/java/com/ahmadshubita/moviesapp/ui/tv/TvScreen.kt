@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,8 +32,7 @@ fun TvScreen(
     val topRatedTvItems = tvScreenState.topRatedTvItems.collectAsLazyPagingItems()
 
     Scaffold(
-            modifier =
-            Modifier
+            modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
     ) {
@@ -40,8 +40,7 @@ fun TvScreen(
             Column(
                     Modifier
                             .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.background)
-                            .padding(top = 10.dp)
+                            .background(MaterialTheme.colorScheme.surface)
             ) {
                 key(topRatedTvItems.loadState) {
                     when (topRatedTvItems.loadState.refresh) {
@@ -56,7 +55,18 @@ fun TvScreen(
                         else -> {}
                     }
                 }
-                CategoryTitle(title = "TV", MaterialTheme.typography.titleLarge)
+                Row(
+                        modifier = Modifier
+                                .padding(top = 16.dp, bottom = 20.dp, start = 16.dp, end = 16.dp)
+                                .background(MaterialTheme.colorScheme.surface),
+                        verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    CategoryTitle(title = "TV", MaterialTheme.typography.titleLarge)
+                }
+                Spacer(modifier = Modifier
+                        .height(10.dp)
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background))
                 LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(start = dimens.space16)

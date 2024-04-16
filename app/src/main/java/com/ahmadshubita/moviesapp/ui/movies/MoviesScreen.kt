@@ -46,7 +46,7 @@ import com.ahmadshubita.moviesapp.ui.theme.dimens
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MoviesScreen(
-    navController: NavController, viewModel: MoviesViewModel = hiltViewModel()
+        navController: NavController, viewModel: MoviesViewModel = hiltViewModel()
 ) {
 
 
@@ -56,14 +56,16 @@ fun MoviesScreen(
     Scaffold {
         if (!moviesScreenState.isErrorState.value && !moviesScreenState.isLoadingState.value) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
+                    modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.surface)
             ) {
 
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(end = 10.dp, top = 10.dp)
+                        modifier = Modifier
+                                .padding(16.dp)
+                                .background(MaterialTheme.colorScheme.surface),
+                        verticalAlignment = Alignment.CenterVertically,
                 ) {
                     CategoryTitle(title = "MOVIES", MaterialTheme.typography.titleLarge)
                     Spacer(modifier = Modifier.weight(1f))
@@ -72,106 +74,107 @@ fun MoviesScreen(
                     })
                 }
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
+                        modifier = Modifier
+                                .fillMaxSize()
+                                .background(MaterialTheme.colorScheme.background)
+                                .verticalScroll(rememberScrollState())
                 ) {
                     LazyHorizontalGrid(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(170.dp)
-                            .padding(top = 10.dp, start = 16.dp),
-                        rows = GridCells.Fixed(1),
-                        contentPadding = PaddingValues(0.dp)
+                            modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(170.dp)
+                                    .padding(top = 10.dp, start = 16.dp),
+                            rows = GridCells.Fixed(1),
+                            contentPadding = PaddingValues(0.dp)
                     ) {
                         items(moviesScreenState.topRatedMoviesItems.size) { item ->
                             MoviesMainCard(moviesScreenState.topRatedMoviesItems[item].posterImageUrl,
-                                onClick = {})
+                                    onClick = {})
                         }
                     }
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
                     ) {
                         CategoryTitle(
-                            title = "Now",
-                            MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                title = "Now",
+                                MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         Text(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(dimens.space2))
-                                .clickable {
-                                    //TODO add view All action
-                                },
-                            text = "View All",
-                            textAlign = TextAlign.Start,
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
+                                modifier = Modifier
+                                        .clip(RoundedCornerShape(dimens.space2))
+                                        .clickable {
+                                            //TODO add view All action
+                                        },
+                                text = "View All",
+                                textAlign = TextAlign.Start,
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.primary
                         )
                     }
                     LazyHorizontalGrid(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(240.dp)
-                            .padding(start = dimens.space16), rows = GridCells.Fixed(1)
+                            modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(240.dp)
+                                    .padding(start = dimens.space16), rows = GridCells.Fixed(1)
                     ) {
                         items(moviesScreenState.nowMoviesItems.size) { item ->
                             MainListCard(
-                                moviesScreenState.nowMoviesItems[item].title ?: "",
-                                moviesScreenState.nowMoviesItems[item].releaseYear,
-                                moviesScreenState.nowMoviesItems[item].rating,
-                                moviesScreenState.nowMoviesItems[item].posterImageUrl,
-                                onClick = {},
-                                isWrapContent = false
+                                    moviesScreenState.nowMoviesItems[item].title ?: "",
+                                    moviesScreenState.nowMoviesItems[item].releaseYear,
+                                    moviesScreenState.nowMoviesItems[item].rating,
+                                    moviesScreenState.nowMoviesItems[item].posterImageUrl,
+                                    onClick = {},
+                                    isWrapContent = false
                             )
                         }
                     }
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
                     ) {
                         CategoryTitle(
-                            title = "Popular",
-                            MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                title = "Popular",
+                                MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         Text(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(dimens.space2))
-                                .clickable {
-                                    //TODO add view All action
-                                },
-                            text = "View All",
-                            textAlign = TextAlign.Start,
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
+                                modifier = Modifier
+                                        .clip(RoundedCornerShape(dimens.space2))
+                                        .clickable {
+                                            //TODO add view All action
+                                        },
+                                text = "View All",
+                                textAlign = TextAlign.Start,
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.primary
                         )
                     }
                     LazyHorizontalGrid(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(480.dp)
-                            .padding(start = 10.dp),
-                        rows = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(6.dp)
+                            modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(480.dp)
+                                    .padding(start = 10.dp),
+                            rows = GridCells.Fixed(2),
+                            contentPadding = PaddingValues(6.dp)
                     ) {
                         items(moviesScreenState.popularMoviesItems.size) { item ->
                             MainListCard(
-                                moviesScreenState.popularMoviesItems[item].title ?: "",
-                                moviesScreenState.popularMoviesItems[item].releaseYear,
-                                moviesScreenState.popularMoviesItems[item].rating,
-                                moviesScreenState.popularMoviesItems[item].posterImageUrl,
-                                onClick = {},
-                                isWrapContent = false
+                                    moviesScreenState.popularMoviesItems[item].title ?: "",
+                                    moviesScreenState.popularMoviesItems[item].releaseYear,
+                                    moviesScreenState.popularMoviesItems[item].rating,
+                                    moviesScreenState.popularMoviesItems[item].posterImageUrl,
+                                    onClick = {},
+                                    isWrapContent = false
                             )
                         }
                     }
@@ -187,12 +190,12 @@ fun MoviesScreen(
 
 @Composable
 fun CategoryTitle(
-    title: String,
-    textSize: androidx.compose.ui.text.TextStyle,
-    color: Color = MaterialTheme.colorScheme.onBackground
+        title: String,
+        textSize: androidx.compose.ui.text.TextStyle,
+        color: Color = MaterialTheme.colorScheme.onBackground
 ) {
     Text(
-        text = title, textAlign = TextAlign.Start, style = textSize, color = color
+            text = title, textAlign = TextAlign.Start, style = textSize, color = color
     )
 }
 
