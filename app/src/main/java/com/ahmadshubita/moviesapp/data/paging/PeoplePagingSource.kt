@@ -18,12 +18,12 @@ class PeoplePagingSource @Inject constructor(
         }.results
     }
 
-    override suspend fun getTotalPages(offset: Int): Int {
+    override suspend fun getTotalPages(page: Int): Int {
         return wrapApiCall {
             mainServices.getPeople(
                     language = language,
-                    page = offset
+                    page = page
             )
-        }.totalResults
+        }.totalPages
     }
 }

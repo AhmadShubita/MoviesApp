@@ -13,10 +13,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.ahmadshubita.moviesapp.ui.components.MainListCard
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultErrorLayout
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultProgressBar
@@ -27,32 +30,59 @@ import com.ahmadshubita.moviesapp.ui.theme.dimens
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PeopleScreen(
-    navController: NavController, viewModel: PeopleViewModel = hiltViewModel()
+        navController: NavController, viewModel: PeopleViewModel = hiltViewModel()
 ) {
     val peopleScreenState by viewModel.uiState.collectAsState()
+    val peopleItems = peopleScreenState.peopleItems.collectAsLazyPagingItems()
 
-    Scaffold (modifier =
+
+    Scaffold(modifier =
     Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background)) {
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)) {
         if (!peopleScreenState.isErrorState.value && !peopleScreenState.isLoadingState.value) {
-            Column(
-                Modifier
+            Column(Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(top = 10.dp)) {
+                    .padding(top = 10.dp)
+            ) {
                 CategoryTitle(title = "PEOPLE", MaterialTheme.typography.titleLarge)
+                key(peopleItems.loadState) {
+                    when (peopleItems.loadState.refresh) {
+                        is LoadState.Error -> {
+                            DefaultErrorLayout()
+                        }
+
+                        is LoadState.Loading -> {
+                            DefaultProgressBar()
+                        }
+
+                        else -> {}
+                    }
+                }
                 LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(start = dimens.space16)
                 ) {
-                    items(peopleScreenState.peopleItems.size) { item ->
+                    items(peopleItems.itemCount) { item ->
                         MainListCard(
-                            title = peopleScreenState.peopleItems[item].originalName ?: "",
-                            year = "",
-                            rating = peopleScreenState.peopleItems[item].rating,
-                            path = peopleScreenState.peopleItems[item].profileImageUrl,
-                            isPeople = true,
-                            isWrapContent = true,
-                            onClick = {})
+                                title = peopleItems[item]?.originalName ?: "",
+                                year = "",
+                                rating = peopleItems[item]?.rating ?: "",
+                                path = peopleItems[item]?.profileImageUrl ?: "",
+                                isPeople = true,
+                                isWrapContent = true,
+                                onClick = {})
+                    }
+
+                    when (peopleItems.loadState.append) {
+                        is LoadState.Loading -> {
+                            item {}
+                        }
+
+                        is LoadState.Error -> {
+                            item {}
+                        }
+
+                        else -> {}
                     }
                 }
             }

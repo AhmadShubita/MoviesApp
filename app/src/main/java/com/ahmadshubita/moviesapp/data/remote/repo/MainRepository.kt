@@ -1,10 +1,7 @@
 package com.ahmadshubita.moviesapp.data.remote.repo
 
 import androidx.paging.PagingData
-import com.ahmadshubita.moviesapp.data.models.MoviesResponse
-import com.ahmadshubita.moviesapp.data.models.PeopleResponse
-import com.ahmadshubita.moviesapp.data.models.Tv
-import com.ahmadshubita.moviesapp.data.models.TvResponse
+import com.ahmadshubita.moviesapp.data.models.*
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
@@ -31,5 +28,5 @@ interface MainRepository {
     suspend fun getPeople(
         language: String,
         page: Int
-    ): PeopleResponse
+    ): Flow<PagingData<People>>
 }
