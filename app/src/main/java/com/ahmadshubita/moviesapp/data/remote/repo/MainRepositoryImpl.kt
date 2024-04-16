@@ -1,10 +1,16 @@
 package com.ahmadshubita.moviesapp.data.remote.repo
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.ahmadshubita.moviesapp.data.models.MoviesResponse
 import com.ahmadshubita.moviesapp.data.models.PeopleResponse
+import com.ahmadshubita.moviesapp.data.models.Tv
 import com.ahmadshubita.moviesapp.data.models.TvResponse
+import com.ahmadshubita.moviesapp.data.paging.TvPagingSource
 import com.ahmadshubita.moviesapp.data.remote.core.MainServices
 import com.ahmadshubita.moviesapp.data.remote.utils.wrapApiCall
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -28,10 +34,11 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTvTopRated(language: String, page: Int): TvResponse {
-        return wrapApiCall {
-            mainServices.getTvTopRated(language, page)
-        }
+    override suspend fun getTvTopRated(language: String, page: Int): Flow<PagingData<Tv>> {
+        return Pager(
+                config = PagingConfig(pageSize = PAGE_SIZE),
+                pagingSourceFactory = { TvPagingSource(mainServices, language) }
+        ).flow
     }
 
     override suspend fun getPeople(language: String, page: Int): PeopleResponse {
@@ -39,4 +46,11 @@ class MainRepositoryImpl @Inject constructor(
             mainServices.getPeople(language, page)
         }
     }
+
+
+    companion object {
+        const val PAGE_SIZE = 20
+
+    }
+
 }

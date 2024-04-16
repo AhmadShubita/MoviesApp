@@ -2,6 +2,8 @@ package com.ahmadshubita.moviesapp.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -51,6 +53,24 @@ abstract class BaseViewModel<STATE, UiEffect>(initState: STATE): ViewModel() {
                 val result2 = async { call2() }.await()
                 val result3 = async { call3() }.await()
                 onSuccess(result1, result2, result3)
+            } catch (e: Exception) {
+                onError(e)
+            }
+        }
+    }
+
+    fun <T : Any> tryToExecutePaging(
+            call: suspend () -> Flow<PagingData<T>>,
+            onSuccess: suspend (PagingData<T>) -> Unit,
+            onError: (Throwable) -> Unit,
+            dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ) {
+        viewModelScope.launch(dispatcher) {
+            try {
+                val result = call().cachedIn(viewModelScope)
+                result.collect { data ->
+                    onSuccess(data)
+                }
             } catch (e: Exception) {
                 onError(e)
             }
