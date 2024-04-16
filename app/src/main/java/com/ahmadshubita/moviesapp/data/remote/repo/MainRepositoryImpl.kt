@@ -3,10 +3,8 @@ package com.ahmadshubita.moviesapp.data.remote.repo
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.ahmadshubita.moviesapp.data.models.MoviesResponse
-import com.ahmadshubita.moviesapp.data.models.PeopleResponse
-import com.ahmadshubita.moviesapp.data.models.Tv
-import com.ahmadshubita.moviesapp.data.models.TvResponse
+import com.ahmadshubita.moviesapp.data.models.*
+import com.ahmadshubita.moviesapp.data.paging.PeoplePagingSource
 import com.ahmadshubita.moviesapp.data.paging.TvPagingSource
 import com.ahmadshubita.moviesapp.data.remote.core.MainServices
 import com.ahmadshubita.moviesapp.data.remote.utils.wrapApiCall
@@ -41,10 +39,11 @@ class MainRepositoryImpl @Inject constructor(
         ).flow
     }
 
-    override suspend fun getPeople(language: String, page: Int): PeopleResponse {
-        return wrapApiCall {
-            mainServices.getPeople(language, page)
-        }
+    override suspend fun getPeople(language: String, page: Int): Flow<PagingData<People>> {
+        return Pager(
+                config = PagingConfig(pageSize = PAGE_SIZE),
+                pagingSourceFactory = { PeoplePagingSource(mainServices, language) }
+        ).flow
     }
 
 
