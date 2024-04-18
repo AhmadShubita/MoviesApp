@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.ahmadshubita.moviesapp.ui.bottombar.AllItemsDestination
+import com.ahmadshubita.moviesapp.ui.bottombar.navigateAllItemsScreen
 import com.ahmadshubita.moviesapp.ui.components.MainListCard
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultErrorLayout
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultProgressBar
@@ -109,7 +111,7 @@ fun MoviesScreen(
                                 modifier = Modifier
                                         .clip(RoundedCornerShape(dimens.space2))
                                         .clickable {
-                                            //TODO add view All action
+                                            navController.navigateAllItemsScreen(false)
                                         },
                                 text = "View All",
                                 textAlign = TextAlign.Start,
@@ -151,7 +153,7 @@ fun MoviesScreen(
                                 modifier = Modifier
                                         .clip(RoundedCornerShape(dimens.space2))
                                         .clickable {
-                                            //TODO add view All action
+                                            navController.navigateAllItemsScreen(true)
                                         },
                                 text = "View All",
                                 textAlign = TextAlign.Start,

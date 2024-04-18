@@ -20,6 +20,16 @@ interface MainRepository {
         page: Int
     ): MoviesResponse
 
+    suspend fun getNowPlayingMoviesPaging(
+            language: String,
+            page: Int
+    ): Flow<PagingData<Movie>>
+
+    suspend fun getPopularMoviesPaging(
+            language: String,
+            page: Int
+    ): Flow<PagingData<Movie>>
+
     suspend fun getTvTopRated(
         language: String,
         page: Int

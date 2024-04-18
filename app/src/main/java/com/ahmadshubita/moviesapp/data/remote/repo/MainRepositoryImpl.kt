@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.ahmadshubita.moviesapp.data.models.*
+import com.ahmadshubita.moviesapp.data.paging.AllItemsPagingSource
 import com.ahmadshubita.moviesapp.data.paging.PeoplePagingSource
 import com.ahmadshubita.moviesapp.data.paging.TvPagingSource
 import com.ahmadshubita.moviesapp.data.remote.core.MainServices
@@ -32,6 +33,20 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getNowPlayingMoviesPaging(language: String, page: Int): Flow<PagingData<Movie>> {
+        return Pager(
+                config = PagingConfig(pageSize = PAGE_SIZE),
+                pagingSourceFactory = { AllItemsPagingSource(mainServices, language, false) }
+        ).flow
+    }
+
+    override suspend fun getPopularMoviesPaging(language: String, page: Int): Flow<PagingData<Movie>> {
+        return Pager(
+                config = PagingConfig(pageSize = PAGE_SIZE),
+                pagingSourceFactory = { AllItemsPagingSource(mainServices, language, true) }
+        ).flow
+    }
+
     override suspend fun getTvTopRated(language: String, page: Int): Flow<PagingData<Tv>> {
         return Pager(
                 config = PagingConfig(pageSize = PAGE_SIZE),
@@ -46,10 +61,8 @@ class MainRepositoryImpl @Inject constructor(
         ).flow
     }
 
-
     companion object {
         const val PAGE_SIZE = 20
 
     }
-
 }
