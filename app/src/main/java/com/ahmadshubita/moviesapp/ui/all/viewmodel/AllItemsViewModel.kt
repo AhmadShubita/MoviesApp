@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.PagingData
 import androidx.paging.filter
-import com.ahmadshubita.moviesapp.base.BaseUiEffect
 import com.ahmadshubita.moviesapp.base.BaseViewModel
 import com.ahmadshubita.moviesapp.data.models.Movie
 import com.ahmadshubita.moviesapp.data.remote.repo.MainRepository
@@ -17,7 +16,7 @@ import javax.inject.Inject
 class AllItemsViewModel @Inject constructor(
         private val mainRepository: MainRepository,
         savedStateHandle: SavedStateHandle
-) : BaseViewModel<AllItemsScreenState, BaseUiEffect>(AllItemsScreenState()) {
+) : BaseViewModel<AllItemsScreenState, AllItemsUiEffect>(AllItemsScreenState()) {
 
     private val allItemsScreenArgs = AllItemsScreenArgs(savedStateHandle)
 
@@ -59,6 +58,10 @@ class AllItemsViewModel @Inject constructor(
 
     fun onRefreshData() {
         getMovies()
+    }
+
+    fun onClickBackButton(){
+        triggerUiEffect(AllItemsUiEffect.NavigateBack)
     }
 
     companion object {

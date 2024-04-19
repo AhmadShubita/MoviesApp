@@ -2,7 +2,6 @@ package com.ahmadshubita.moviesapp.ui.movies.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.ahmadshubita.moviesapp.base.BaseUiEffect
 import com.ahmadshubita.moviesapp.base.BaseViewModel
 import com.ahmadshubita.moviesapp.data.local.MainDataStore
 import com.ahmadshubita.moviesapp.data.remote.repo.MainRepository
@@ -15,7 +14,7 @@ import javax.inject.Inject
 class MoviesViewModel @Inject constructor(
     private val mainRepository: MainRepository,
     private val dataStore: MainDataStore
-) : BaseViewModel<MoviesScreenState, BaseUiEffect>(MoviesScreenState()) {
+) : BaseViewModel<MoviesScreenState, BaseViewModel.BaseUiEffect>(MoviesScreenState()) {
 
     var isDarkTheme = mutableStateOf(false)
 

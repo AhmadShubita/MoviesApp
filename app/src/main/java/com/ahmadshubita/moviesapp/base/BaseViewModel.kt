@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<STATE, UiEffect>(initState: STATE): ViewModel() {
 
-
     protected val _uiState: MutableStateFlow<STATE> by lazy { MutableStateFlow(initState) }
     val uiState = _uiState.asStateFlow()
 
