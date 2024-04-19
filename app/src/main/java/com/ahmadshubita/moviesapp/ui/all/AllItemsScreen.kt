@@ -5,15 +5,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,45 +30,86 @@ import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ahmadshubita.moviesapp.R
+import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsScreenState
+import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsUiEffect
 import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsViewModel
 import com.ahmadshubita.moviesapp.ui.components.MainListCard
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultErrorLayout
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultProgressBar
-import com.ahmadshubita.moviesapp.ui.movies.CategoryTitle
 import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 import com.ahmadshubita.moviesapp.ui.theme.dimens
+import com.ahmadshubita.moviesapp.ui.util.HandleUiEffect
 
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllItemsScreen(
-        navController: NavController, viewModel: AllItemsViewModel = hiltViewModel()
+    navController: NavController, viewModel: AllItemsViewModel = hiltViewModel()
 ) {
 
     val allItemsScreenState by viewModel.uiState.collectAsState()
-    val moviesItems = allItemsScreenState.moviesItems.collectAsLazyPagingItems()
+    HandleUiEffect(effect = viewModel.uiEffect) { viewAllViewModel ->
+        when (viewAllViewModel) {
+            is AllItemsUiEffect.NavigateBack -> {
+                navController.popBackStack()
+            }
 
-    Scaffold(modifier =
-    Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)) {
-        if (!allItemsScreenState.isErrorState.value && !allItemsScreenState.isLoadingState.value) {
-            Column(Modifier
+            is AllItemsUiEffect.NavigateToDetails -> {
+            }
+        }
+    }
+    AllItemsContent(allItemsScreenState, viewModel)
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AllItemsContent(
+    state: AllItemsScreenState, viewModel: AllItemsViewModel = hiltViewModel()
+) {
+    val moviesItems = state.moviesItems.collectAsLazyPagingItems()
+
+    Scaffold(modifier = Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colorScheme.background),
+        topBar = {
+            TopAppBar(modifier = Modifier
+                .wrapContentSize()
+                .shadow(4.dp),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.all_items_capital),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { viewModel.onClickBackButton()}) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                })
+        }) {
+        if (!state.isErrorState.value && !state.isLoadingState.value) {
+            Column(
+                Modifier
                     .fillMaxSize()
+                    .padding(it)
                     .background(MaterialTheme.colorScheme.surface)
             ) {
-                Row(
-                        modifier = Modifier
-                                .padding(top = 16.dp, bottom = 20.dp, start = 16.dp, end = 16.dp)
-                                .background(MaterialTheme.colorScheme.surface),
-                        verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    CategoryTitle(title = stringResource(id = R.string.all_items_capital), MaterialTheme.typography.titleLarge)
-                }
-                Spacer(modifier = Modifier
+
+                Spacer(
+                    modifier = Modifier
                         .height(10.dp)
                         .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.background))
+                        .background(MaterialTheme.colorScheme.background)
+                )
                 key(moviesItems.loadState) {
                     when (moviesItems.loadState.refresh) {
                         is LoadState.Error -> {
@@ -74,16 +123,17 @@ fun AllItemsScreen(
                         else -> {}
                     }
                 }
-                LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(start = dimens.space16)
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(start = dimens.space16)
                 ) {
                     items(moviesItems.itemCount) { item ->
-                        MainListCard(
-                                title = moviesItems[item]?.title ?: "",
-                                year = moviesItems[item]?.releaseYear ?: "",
-                                rating = moviesItems[item]?.rating ?: "",
-                                path = moviesItems[item]?.posterImageUrl ?: "",
-                                isWrapContent = true,
-                                onClick = {})
+                        MainListCard(title = moviesItems[item]?.title ?: "",
+                            year = moviesItems[item]?.releaseYear ?: "",
+                            rating = moviesItems[item]?.rating ?: "",
+                            path = moviesItems[item]?.posterImageUrl ?: "",
+                            isWrapContent = true,
+                            onClick = {})
                     }
 
                     when (moviesItems.loadState.append) {
@@ -99,7 +149,7 @@ fun AllItemsScreen(
                     }
                 }
             }
-        } else if (allItemsScreenState.isLoadingState.value) {
+        } else if (state.isLoadingState.value) {
             DefaultProgressBar()
         } else {
             DefaultErrorLayout()

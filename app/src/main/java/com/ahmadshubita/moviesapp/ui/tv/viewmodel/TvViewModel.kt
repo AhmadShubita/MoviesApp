@@ -3,7 +3,6 @@ package com.ahmadshubita.moviesapp.ui.tv.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.paging.PagingData
 import androidx.paging.filter
-import com.ahmadshubita.moviesapp.base.BaseUiEffect
 import com.ahmadshubita.moviesapp.base.BaseViewModel
 import com.ahmadshubita.moviesapp.data.models.Tv
 import com.ahmadshubita.moviesapp.data.remote.repo.MainRepository
@@ -14,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TvViewModel @Inject constructor(private val mainRepository: MainRepository) :
-        BaseViewModel<TvScreenState, BaseUiEffect>(
+        BaseViewModel<TvScreenState, BaseViewModel.BaseUiEffect>(
                 TvScreenState()
         ) {
 
