@@ -64,6 +64,10 @@ class AllItemsViewModel @Inject constructor(
         triggerUiEffect(AllItemsUiEffect.NavigateBack)
     }
 
+    fun onMovieItemClick(){
+        triggerUiEffect(AllItemsUiEffect.NavigateToDetails)
+    }
+
     companion object {
         const val LANGUAGE_TYPE = "en-US"
     }

@@ -33,6 +33,7 @@ import com.ahmadshubita.moviesapp.R
 import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsScreenState
 import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsUiEffect
 import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsViewModel
+import com.ahmadshubita.moviesapp.ui.bottombar.navigateMovieDetailsScreen
 import com.ahmadshubita.moviesapp.ui.components.MainListCard
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultErrorLayout
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultProgressBar
@@ -55,6 +56,7 @@ fun AllItemsScreen(
             }
 
             is AllItemsUiEffect.NavigateToDetails -> {
+                navController.navigateMovieDetailsScreen()
             }
         }
     }
@@ -133,7 +135,9 @@ fun AllItemsContent(
                             rating = moviesItems[item]?.rating ?: "",
                             path = moviesItems[item]?.posterImageUrl ?: "",
                             isWrapContent = true,
-                            onClick = {})
+                            onClick = {
+                                viewModel.onMovieItemClick()
+                            })
                     }
 
                     when (moviesItems.loadState.append) {

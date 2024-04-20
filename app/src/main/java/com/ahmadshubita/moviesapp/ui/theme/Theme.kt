@@ -109,12 +109,6 @@ fun MoviesAppTheme(
     }
     val view = LocalView.current
 
-    if (!view.isInEditMode) {
-        SideEffect {
-            (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
-            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = isDarkTheme
-        }
-    }
     MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography,
