@@ -4,7 +4,5 @@ import com.ahmadshubita.moviesapp.base.BaseViewModel
 
 interface AllItemsUiEffect : BaseViewModel.BaseUiEffect {
     object NavigateBack : AllItemsUiEffect
-    data class NavigateToDetails(
-        val movieItem: String
-    ) : AllItemsUiEffect
+    object NavigateToDetails: AllItemsUiEffect
 }
