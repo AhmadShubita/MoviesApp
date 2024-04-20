@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.ahmadshubita.moviesapp.R
-import com.ahmadshubita.moviesapp.ui.components.MainListCard
 import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 import com.ahmadshubita.moviesapp.ui.theme.customColors
 import com.ahmadshubita.moviesapp.ui.theme.dimens
@@ -211,7 +210,8 @@ fun MovieDetailsScreen() {
             Text(
                 text = "Production Companies",
                 modifier = Modifier.padding(start = dimens.space16, top = dimens.space24),
-                style = fontStyle.titleMedium
+                style = fontStyle.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
             LazyHorizontalGrid(
                 modifier = Modifier
@@ -221,8 +221,8 @@ fun MovieDetailsScreen() {
                 rows = GridCells.Fixed(1)
             ) {
                 items(6) { item ->
-                    MainListCard(
-                        "", "", "", "", onClick = {}, isWrapContent = false
+                    ProductionCompaniesListCard(
+                        "", "", "", onClick = {}
                     )
                 }
             }
