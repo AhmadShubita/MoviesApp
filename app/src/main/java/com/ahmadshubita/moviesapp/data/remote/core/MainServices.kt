@@ -1,7 +1,9 @@
 package com.ahmadshubita.moviesapp.data.remote.core
 
+import com.ahmadshubita.moviesapp.data.models.MovieDetails
 import com.ahmadshubita.moviesapp.data.models.MoviesResponse
 import com.ahmadshubita.moviesapp.data.models.PeopleResponse
+import com.ahmadshubita.moviesapp.data.models.Series
 import com.ahmadshubita.moviesapp.data.models.TvResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -43,5 +45,10 @@ interface MainServices {
     @GET("movie/{movie_id}")
     suspend fun getMovieById(
         @Path("movie_id") movieId: Int
-    ): Response<PeopleResponse>
+    ): Response<MovieDetails>
+
+    @GET("tv/{tv_id}")
+    suspend fun getTvById(
+        @Path("tv_id") tvId: Int
+    ): Response<Series>
 }

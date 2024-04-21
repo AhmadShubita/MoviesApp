@@ -61,6 +61,18 @@ class MainRepositoryImpl @Inject constructor(
         ).flow
     }
 
+    override suspend fun getMovieById(movieId: Int): MovieDetails {
+        return wrapApiCall {
+            mainServices.getMovieById(movieId)
+        }
+    }
+
+    override suspend fun getTvSeriesById(tvId: Int): Series {
+        return wrapApiCall {
+            mainServices.getTvById(tvId)
+        }
+    }
+
     companion object {
         const val PAGE_SIZE = 20
 

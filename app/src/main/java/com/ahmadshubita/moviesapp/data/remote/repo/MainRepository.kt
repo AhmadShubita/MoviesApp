@@ -39,4 +39,12 @@ interface MainRepository {
         language: String,
         page: Int
     ): Flow<PagingData<People>>
+
+    suspend fun getMovieById(
+        movieId: Int
+    ): MovieDetails
+
+    suspend fun getTvSeriesById(
+        tvId: Int
+    ): Series
 }
