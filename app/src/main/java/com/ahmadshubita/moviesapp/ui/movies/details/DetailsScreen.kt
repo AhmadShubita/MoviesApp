@@ -26,6 +26,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -36,23 +38,39 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.ahmadshubita.moviesapp.R
+import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsScreenState
+import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsViewModel
+import com.ahmadshubita.moviesapp.ui.movies.details.viewmodel.DetailsScreenState
+import com.ahmadshubita.moviesapp.ui.movies.details.viewmodel.DetailsUiEffect
+import com.ahmadshubita.moviesapp.ui.movies.details.viewmodel.DetailsViewModel
 import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 import com.ahmadshubita.moviesapp.ui.theme.customColors
 import com.ahmadshubita.moviesapp.ui.theme.dimens
+import com.ahmadshubita.moviesapp.ui.util.HandleUiEffect
 
 @Composable
-fun MovieDetailsScreen(
-    navController: NavController
+fun DetailsScreen(
+    navController: NavController, viewModel: DetailsViewModel = hiltViewModel()
 ) {
-    MovieDetailsScreen()
+    val detailsScreenState by viewModel.uiState.collectAsState()
+    HandleUiEffect(effect = viewModel.uiEffect) {
+        when (it) {
+            is DetailsUiEffect.NavigateBack -> {
+                navController.popBackStack()
+            }
+        }
+    }
+    DetailsContent(detailsScreenState, viewModel)
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MovieDetailsScreen() {
+fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
 
     val colors = customColors
     val dimens = dimens
@@ -112,7 +130,7 @@ fun MovieDetailsScreen() {
                 ) {
                     Text(
                         modifier = Modifier.padding(horizontal = dimens.space20),
-                        text = "Fast Farient",
+                        text = state.detailsItem.title?: "",
                         color = MaterialTheme.colorScheme.onTertiary,
                         style = fontStyle.titleLarge,
                         maxLines = 5,
@@ -134,7 +152,7 @@ fun MovieDetailsScreen() {
                         ) {
                             Text(
                                 modifier = Modifier,
-                                text = "322 playing now",
+                                text = "${state.detailsItem.voteCount} playing now",
                                 color = MaterialTheme.colorScheme.surfaceVariant,
                                 style = fontStyle.labelSmall,
                                 maxLines = 5,
@@ -146,7 +164,7 @@ fun MovieDetailsScreen() {
                                 verticalAlignment = Alignment.Bottom
                             ) {
                                 Text(
-                                    text = "9.7",
+                                    text = state.detailsItem.voteAverage.toString(),
                                     color = MaterialTheme.colorScheme.secondary,
                                     style = fontStyle.titleLarge,
                                     maxLines = 5,
@@ -154,7 +172,7 @@ fun MovieDetailsScreen() {
                                 )
                                 RatingLayout(
                                     modifier = Modifier.padding(start = 8.dp, bottom = 2.dp),
-                                    rating = 9.0
+                                    rating = state.detailsItem.voteAverage ?: 0.0
                                 )
                             }
                         }
@@ -199,7 +217,7 @@ fun MovieDetailsScreen() {
                         modifier = Modifier
                             .padding(bottom = dimens.space40)
                             .padding(horizontal = dimens.space20),
-                        text = "This Title will be like this is not acceptable",
+                        text = state.detailsItem.overview?: "",
                         color = MaterialTheme.colorScheme.onTertiary,
                         style = fontStyle.titleLarge,
                         maxLines = 5,
@@ -221,9 +239,7 @@ fun MovieDetailsScreen() {
                 rows = GridCells.Fixed(1)
             ) {
                 items(6) { item ->
-                    ProductionCompaniesListCard(
-                        "", "", "", onClick = {}
-                    )
+                    ProductionCompaniesListCard("", "", "", onClick = {})
                 }
             }
 
@@ -268,6 +284,6 @@ fun MovieDetailsScreen() {
 @Composable
 fun MovieDetailsScreenPreview() {
     MoviesAppTheme {
-        MovieDetailsScreen()
+        DetailsScreen(navController = rememberNavController())
     }
 }

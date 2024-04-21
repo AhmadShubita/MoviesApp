@@ -2,6 +2,7 @@ package com.ahmadshubita.moviesapp.data.remote.repo
 
 import androidx.paging.PagingData
 import com.ahmadshubita.moviesapp.data.models.*
+import com.ahmadshubita.moviesapp.ui.movies.details.model.DetailsItem
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
@@ -42,9 +43,9 @@ interface MainRepository {
 
     suspend fun getMovieById(
         movieId: Int
-    ): MovieDetails
+    ): DetailsItem
 
     suspend fun getTvSeriesById(
         tvId: Int
-    ): Series
+    ): DetailsItem
 }

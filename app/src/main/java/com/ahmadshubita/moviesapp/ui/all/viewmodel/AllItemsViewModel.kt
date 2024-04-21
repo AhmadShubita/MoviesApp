@@ -7,6 +7,7 @@ import androidx.paging.filter
 import com.ahmadshubita.moviesapp.base.BaseViewModel
 import com.ahmadshubita.moviesapp.data.models.Movie
 import com.ahmadshubita.moviesapp.data.remote.repo.MainRepository
+import com.ahmadshubita.moviesapp.ui.bottombar.DetailsType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
@@ -64,8 +65,8 @@ class AllItemsViewModel @Inject constructor(
         triggerUiEffect(AllItemsUiEffect.NavigateBack)
     }
 
-    fun onMovieItemClick(){
-        triggerUiEffect(AllItemsUiEffect.NavigateToDetails)
+    fun onMovieItemClick(detailsType: DetailsType, id: Int){
+        triggerUiEffect(AllItemsUiEffect.NavigateToDetails(detailsType, id.toString()))
     }
 
     companion object {
