@@ -1,6 +1,5 @@
 package com.ahmadshubita.moviesapp.ui.all
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -33,7 +32,8 @@ import com.ahmadshubita.moviesapp.R
 import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsScreenState
 import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsUiEffect
 import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsViewModel
-import com.ahmadshubita.moviesapp.ui.bottombar.navigateMovieDetailsScreen
+import com.ahmadshubita.moviesapp.ui.bottombar.DetailsType
+import com.ahmadshubita.moviesapp.ui.bottombar.navigateToDetailsScreen
 import com.ahmadshubita.moviesapp.ui.components.MainListCard
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultErrorLayout
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultProgressBar
@@ -49,14 +49,17 @@ fun AllItemsScreen(
 ) {
 
     val allItemsScreenState by viewModel.uiState.collectAsState()
-    HandleUiEffect(effect = viewModel.uiEffect) { viewAllViewModel ->
-        when (viewAllViewModel) {
+    HandleUiEffect(effect = viewModel.uiEffect) {
+        when (it) {
             is AllItemsUiEffect.NavigateBack -> {
                 navController.popBackStack()
             }
 
             is AllItemsUiEffect.NavigateToDetails -> {
-                navController.navigateMovieDetailsScreen()
+                navController.navigateToDetailsScreen(
+                    it.detailsType,
+                    it.id
+                )
             }
         }
     }
@@ -89,7 +92,7 @@ fun AllItemsContent(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { viewModel.onClickBackButton()}) {
+                    IconButton(onClick = { viewModel.onClickBackButton() }) {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
                             contentDescription = "",
@@ -136,7 +139,10 @@ fun AllItemsContent(
                             path = moviesItems[item]?.posterImageUrl ?: "",
                             isWrapContent = true,
                             onClick = {
-                                viewModel.onMovieItemClick()
+                                viewModel.onMovieItemClick(
+                                    DetailsType.MOVIE_DETAILS,
+                                    moviesItems[item]?.id ?: 0
+                                )
                             })
                     }
 

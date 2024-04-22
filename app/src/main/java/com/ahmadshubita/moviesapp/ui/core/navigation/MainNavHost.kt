@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ahmadshubita.moviesapp.ui.bottombar.MoviesDestination
 import com.ahmadshubita.moviesapp.ui.bottombar.allItemsGraph
-import com.ahmadshubita.moviesapp.ui.bottombar.movieDetailsGraph
+import com.ahmadshubita.moviesapp.ui.bottombar.detailsGraph
 import com.ahmadshubita.moviesapp.ui.bottombar.moviesGraph
 import com.ahmadshubita.moviesapp.ui.bottombar.peopleGraph
 import com.ahmadshubita.moviesapp.ui.bottombar.tvGraph
@@ -30,6 +30,6 @@ fun MainNavHost(
         tvGraph(navController = navController, isBottomNavVisible = isBottomNavVisible, navigateToDetails = {})
         peopleGraph(navController = navController, isBottomNavVisible = isBottomNavVisible, navigateToDetails = {})
         allItemsGraph(navController = navController, isBottomNavVisible = isBottomNavVisible, navigateToDetails = {})
-        movieDetailsGraph(navController = navController, isBottomNavVisible = isBottomNavVisible)
+        detailsGraph(navController = navController, isBottomNavVisible = isBottomNavVisible)
     }
 }
