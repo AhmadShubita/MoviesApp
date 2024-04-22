@@ -18,29 +18,52 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.ahmadshubita.moviesapp.ui.bottombar.DetailsType
+import com.ahmadshubita.moviesapp.ui.bottombar.navigateToDetailsScreen
 import com.ahmadshubita.moviesapp.ui.components.MainListCard
 import com.ahmadshubita.moviesapp.ui.movies.CategoryTitle
 import com.ahmadshubita.moviesapp.ui.theme.dimens
+import com.ahmadshubita.moviesapp.ui.tv.viewmodel.TvScreenState
+import com.ahmadshubita.moviesapp.ui.tv.viewmodel.TvUiEffect
 import com.ahmadshubita.moviesapp.ui.tv.viewmodel.TvViewModel
+import com.ahmadshubita.moviesapp.ui.util.HandleUiEffect
+
+@Composable
+fun TvScreen(
+    navController: NavController, viewModel: TvViewModel = hiltViewModel()
+) {
+
+    val state by viewModel.uiState.collectAsState()
+    HandleUiEffect(effect = viewModel.uiEffect) {
+        when (it) {
+            is TvUiEffect.NavigateToDetails -> {
+                navController.navigateToDetailsScreen(
+                    it.detailsType,
+                    it.id
+                )
+            }
+        }
+    }
+    TvContent(state, viewModel)
+}
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TvScreen(
-        navController: NavController, viewModel: TvViewModel = hiltViewModel()
+fun TvContent(
+    tvScreenState: TvScreenState, viewModel: TvViewModel
 ) {
-    val tvScreenState by viewModel.uiState.collectAsState()
     val topRatedTvItems = tvScreenState.topRatedTvItems.collectAsLazyPagingItems()
 
     Scaffold(
-            modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
         if (!tvScreenState.isErrorState.value && !tvScreenState.isLoadingState.value) {
             Column(
-                    Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.surface)
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
                 key(topRatedTvItems.loadState) {
                     when (topRatedTvItems.loadState.refresh) {
@@ -56,28 +79,38 @@ fun TvScreen(
                     }
                 }
                 Row(
-                        modifier = Modifier
-                                .padding(top = 16.dp, bottom = 20.dp, start = 16.dp, end = 16.dp)
-                                .background(MaterialTheme.colorScheme.surface),
-                        verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(top = 16.dp, bottom = 20.dp, start = 16.dp, end = 16.dp)
+                        .background(MaterialTheme.colorScheme.surface),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     CategoryTitle(title = "TV", MaterialTheme.typography.titleLarge)
                 }
-                Spacer(modifier = Modifier
+                Spacer(
+                    modifier = Modifier
                         .height(10.dp)
                         .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.background))
+                        .background(MaterialTheme.colorScheme.background)
+                )
                 LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(start = dimens.space16)
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(start = dimens.space16)
                 ) {
 
                     items(topRatedTvItems.itemCount) { item ->
-                        MainListCard(title = topRatedTvItems[item]?.name ?: "",
-                                year = topRatedTvItems[item]?.releaseYear ?: "",
-                                rating = topRatedTvItems[item]?.rating ?: "",
-                                path = topRatedTvItems[item]?.posterImageUrl ?: "",
-                                onClick = {}, isWrapContent = true
+                        MainListCard(
+                            title = topRatedTvItems[item]?.name ?: "",
+                            year = topRatedTvItems[item]?.releaseYear ?: "",
+                            rating = topRatedTvItems[item]?.rating ?: "",
+                            path = topRatedTvItems[item]?.posterImageUrl ?: "",
+                            onClick = {
+                                topRatedTvItems[item]?.id?.let { id ->
+                                    viewModel.onMovieItemClick(
+                                        DetailsType.TV_DETAILS,
+                                        id
+                                    )
+                                }
+                            }, isWrapContent = true
                         )
                     }
 

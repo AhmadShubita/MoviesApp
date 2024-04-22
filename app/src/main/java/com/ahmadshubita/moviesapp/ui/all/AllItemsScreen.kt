@@ -64,7 +64,6 @@ fun AllItemsScreen(
         }
     }
     AllItemsContent(allItemsScreenState, viewModel)
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

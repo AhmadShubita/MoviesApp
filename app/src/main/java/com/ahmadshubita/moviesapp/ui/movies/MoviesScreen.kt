@@ -32,21 +32,51 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.ahmadshubita.moviesapp.ui.bottombar.DetailsType
 import com.ahmadshubita.moviesapp.ui.bottombar.navigateAllItemsScreen
+import com.ahmadshubita.moviesapp.ui.bottombar.navigateToDetailsScreen
 import com.ahmadshubita.moviesapp.ui.components.MainListCard
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultErrorLayout
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultProgressBar
 import com.ahmadshubita.moviesapp.ui.movies.components.CustomSwitch
 import com.ahmadshubita.moviesapp.ui.movies.components.MoviesMainCard
+import com.ahmadshubita.moviesapp.ui.movies.viewmodel.MoviesScreenState
+import com.ahmadshubita.moviesapp.ui.movies.viewmodel.MoviesUiEffect
 import com.ahmadshubita.moviesapp.ui.movies.viewmodel.MoviesViewModel
 import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 import com.ahmadshubita.moviesapp.ui.theme.dimens
+import com.ahmadshubita.moviesapp.ui.util.HandleUiEffect
 
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MoviesScreen(
     navController: NavController, viewModel: MoviesViewModel = hiltViewModel()
+) {
+
+    val state by viewModel.uiState.collectAsState()
+    HandleUiEffect(effect = viewModel.uiEffect) {
+        when (it) {
+            is MoviesUiEffect.NavigateToAllItems -> {
+                navController.navigateAllItemsScreen(
+                    it.isPopular
+                )
+            }
+
+            is MoviesUiEffect.NavigateToDetails -> {
+                navController.navigateToDetailsScreen(
+                    it.detailsType,
+                    it.id
+                )
+            }
+        }
+    }
+    MoviesContent(state, viewModel)
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun MoviesContent(
+    state: MoviesScreenState, viewModel: MoviesViewModel
 ) {
 
     val moviesScreenState by viewModel.uiState.collectAsState()
@@ -88,7 +118,12 @@ fun MoviesScreen(
                     ) {
                         items(moviesScreenState.topRatedMoviesItems.size) { item ->
                             MoviesMainCard(moviesScreenState.topRatedMoviesItems[item].posterImageUrl,
-                                onClick = {})
+                                onClick = {
+                                    viewModel.onMovieItemClick(
+                                        DetailsType.MOVIE_DETAILS,
+                                        moviesScreenState.topRatedMoviesItems[item].id
+                                    )
+                                })
                         }
                     }
                     Row(
@@ -105,7 +140,7 @@ fun MoviesScreen(
                         )
 
                         TextButton(modifier = Modifier.wrapContentWidth(),
-                            onClick = { navController.navigateAllItemsScreen(false) }) {
+                            onClick = { viewModel.navigateAllItemsScreen(false) }) {
                             Text(
                                 text = "View All",
                                 textAlign = TextAlign.Start,
@@ -126,7 +161,12 @@ fun MoviesScreen(
                                 moviesScreenState.nowMoviesItems[item].releaseYear,
                                 moviesScreenState.nowMoviesItems[item].rating,
                                 moviesScreenState.nowMoviesItems[item].posterImageUrl,
-                                onClick = {},
+                                onClick = {
+                                    viewModel.onMovieItemClick(
+                                        DetailsType.MOVIE_DETAILS,
+                                        moviesScreenState.nowMoviesItems[item].id
+                                    )
+                                },
                                 isWrapContent = false
                             )
                         }
@@ -145,7 +185,7 @@ fun MoviesScreen(
                         )
 
                         TextButton(modifier = Modifier.wrapContentWidth(),
-                            onClick = { navController.navigateAllItemsScreen(true) }) {
+                            onClick = { viewModel.navigateAllItemsScreen(true) }) {
                             Text(
                                 text = "View All",
                                 textAlign = TextAlign.Start,
@@ -168,7 +208,12 @@ fun MoviesScreen(
                                 moviesScreenState.popularMoviesItems[item].releaseYear,
                                 moviesScreenState.popularMoviesItems[item].rating,
                                 moviesScreenState.popularMoviesItems[item].posterImageUrl,
-                                onClick = {},
+                                onClick = {
+                                    viewModel.onMovieItemClick(
+                                        DetailsType.MOVIE_DETAILS,
+                                        moviesScreenState.popularMoviesItems[item].id
+                                    )
+                                },
                                 isWrapContent = false
                             )
                         }

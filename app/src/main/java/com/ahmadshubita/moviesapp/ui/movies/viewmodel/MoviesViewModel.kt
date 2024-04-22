@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.ahmadshubita.moviesapp.base.BaseViewModel
 import com.ahmadshubita.moviesapp.data.local.MainDataStore
 import com.ahmadshubita.moviesapp.data.remote.repo.MainRepository
+import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsUiEffect
+import com.ahmadshubita.moviesapp.ui.bottombar.DetailsType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -14,7 +16,7 @@ import javax.inject.Inject
 class MoviesViewModel @Inject constructor(
     private val mainRepository: MainRepository,
     private val dataStore: MainDataStore
-) : BaseViewModel<MoviesScreenState, BaseViewModel.BaseUiEffect>(MoviesScreenState()) {
+) : BaseViewModel<MoviesScreenState, MoviesUiEffect>(MoviesScreenState()) {
 
     var isDarkTheme = mutableStateOf(false)
 
@@ -47,6 +49,14 @@ class MoviesViewModel @Inject constructor(
 
     fun switchTheme(newState: Boolean) {
         viewModelScope.launch { dataStore.setDarkThemePrefs(newState) }
+    }
+
+    fun onMovieItemClick(detailsType: DetailsType, id: Int){
+        triggerUiEffect(MoviesUiEffect.NavigateToDetails(detailsType, id.toString()))
+    }
+
+    fun navigateAllItemsScreen(isPopular: Boolean){
+        triggerUiEffect(MoviesUiEffect.NavigateToAllItems(isPopular))
     }
 
     companion object{
