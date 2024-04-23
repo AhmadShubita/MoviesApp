@@ -52,7 +52,7 @@ fun ProductionCompaniesListCard(
                 AsyncImage(
                     path,
                     contentDescription = null,
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.Inside,
                     modifier = Modifier
                         .fillMaxSize()
                 )

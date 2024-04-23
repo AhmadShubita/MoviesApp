@@ -1,5 +1,6 @@
 package com.ahmadshubita.moviesapp.data.models
 
+import com.ahmadshubita.moviesapp.BuildConfig
 import com.google.gson.annotations.SerializedName
 
 data class MovieDetails(
@@ -82,7 +83,9 @@ data class ProductionCompany(
     val logoPath: String? = null,
     @SerializedName("origin_country")
     val originCountry: String
-)
+) {
+    val logoUrl get() = BuildConfig.BASE_IMAGES_URL + logoPath
+}
 
 data class ProductionCountry(
     @SerializedName("iso_3166_1")

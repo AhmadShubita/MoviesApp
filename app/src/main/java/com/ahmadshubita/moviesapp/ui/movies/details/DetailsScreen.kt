@@ -43,8 +43,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.ahmadshubita.moviesapp.R
-import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsScreenState
-import com.ahmadshubita.moviesapp.ui.all.viewmodel.AllItemsViewModel
 import com.ahmadshubita.moviesapp.ui.movies.details.viewmodel.DetailsScreenState
 import com.ahmadshubita.moviesapp.ui.movies.details.viewmodel.DetailsUiEffect
 import com.ahmadshubita.moviesapp.ui.movies.details.viewmodel.DetailsViewModel
@@ -72,41 +70,19 @@ fun DetailsScreen(
 @Composable
 fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
 
-    val colors = customColors
+    val customColorsPalette = customColors
+    val colorScheme = MaterialTheme.colorScheme
     val dimens = dimens
     val fontStyle = MaterialTheme.typography
     Box(
         modifier = Modifier
             .fillMaxHeight()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(colorScheme.surface)
     ) {
         Column {
             Box(modifier = Modifier.height(400.dp)) {
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(dimens.space10)
-                ) {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            modifier = Modifier.clickable { },
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-                }
                 AsyncImage(
-                    "path",
+                    state.detailsItem.posterImageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
@@ -117,8 +93,8 @@ fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
                         .background(
                             Brush.verticalGradient(
                                 colors = listOf(
-                                    colors.transparent,
-                                    colors.transparent.copy(alpha = dimens.floatValues.float0_8)
+                                    customColorsPalette.transparent,
+                                    customColorsPalette.transparent.copy(alpha = dimens.floatValues.float0_8)
                                 ), startY = dimens.floatValues.float200
                             )
                         )
@@ -130,8 +106,8 @@ fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
                 ) {
                     Text(
                         modifier = Modifier.padding(horizontal = dimens.space20),
-                        text = state.detailsItem.title?: "",
-                        color = MaterialTheme.colorScheme.onTertiary,
+                        text = state.detailsItem.title ?: "",
+                        color = colorScheme.onTertiary,
                         style = fontStyle.titleLarge,
                         maxLines = 5,
                         overflow = TextOverflow.Ellipsis
@@ -152,9 +128,9 @@ fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
                         ) {
                             Text(
                                 modifier = Modifier,
-                                text = "${state.detailsItem.voteCount} playing now",
-                                color = MaterialTheme.colorScheme.surfaceVariant,
-                                style = fontStyle.labelSmall,
+                                text = "${state.detailsItem.voteCount} People Rating",
+                                color = colorScheme.surfaceVariant,
+                                style = fontStyle.titleMedium,
                                 maxLines = 5,
                                 overflow = TextOverflow.Ellipsis
                             )
@@ -164,8 +140,8 @@ fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
                                 verticalAlignment = Alignment.Bottom
                             ) {
                                 Text(
-                                    text = state.detailsItem.voteAverage.toString(),
-                                    color = MaterialTheme.colorScheme.secondary,
+                                    text = state.detailsItem.rating,
+                                    color = colorScheme.secondary,
                                     style = fontStyle.titleLarge,
                                     maxLines = 5,
                                     overflow = TextOverflow.Ellipsis
@@ -184,7 +160,7 @@ fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
                                 .clickable { },
                             shape = RoundedCornerShape(dimens.space56),
                             elevation = CardDefaults.cardElevation(dimens.space16),
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)
+                            colors = CardDefaults.cardColors(containerColor = colorScheme.secondary)
                         ) {
                             Box(
                                 modifier = Modifier
@@ -192,8 +168,8 @@ fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
                                     .background(
                                         brush = Brush.horizontalGradient(
                                             colors = listOf(
-                                                MaterialTheme.colorScheme.onPrimaryContainer,
-                                                MaterialTheme.colorScheme.primaryContainer
+                                                colorScheme.onPrimaryContainer,
+                                                colorScheme.primaryContainer
                                             )
                                         )
                                     ), contentAlignment = Alignment.Center
@@ -217,19 +193,43 @@ fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
                         modifier = Modifier
                             .padding(bottom = dimens.space40)
                             .padding(horizontal = dimens.space20),
-                        text = state.detailsItem.overview?: "",
-                        color = MaterialTheme.colorScheme.onTertiary,
+                        text = state.detailsItem.overview ?: "",
+                        color = colorScheme.onTertiary,
                         style = fontStyle.titleLarge,
                         maxLines = 5,
                         overflow = TextOverflow.Ellipsis
                     )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(dimens.space10)
+                ) {
+
+                    IconButton(onClick = { viewModel.onClickBackButton()}) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = { }) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
+                            contentDescription = "",
+                            tint = colorScheme.onTertiary
+                        )
+                    }
                 }
             }
             Text(
                 text = "Production Companies",
                 modifier = Modifier.padding(start = dimens.space16, top = dimens.space24),
                 style = fontStyle.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
+                color = colorScheme.onBackground
             )
             LazyHorizontalGrid(
                 modifier = Modifier
@@ -238,16 +238,19 @@ fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
                     .padding(start = dimens.space16, top = dimens.space20),
                 rows = GridCells.Fixed(1)
             ) {
-                items(6) { item ->
-                    ProductionCompaniesListCard("", "", "", onClick = {})
+                state.detailsItem.productionCompanies?.size?.let {
+                    items(it) { item ->
+                        ProductionCompaniesListCard(state.detailsItem.productionCompanies[item].name,
+                            "",
+                            state.detailsItem.productionCompanies[item].logoUrl,
+                            onClick = {})
+                    }
                 }
             }
 
             Row(
                 modifier = Modifier
-                    .padding(
-                        start = dimens.space14, end = dimens.space16, top = dimens.space26
-                    )
+                    .padding(top = dimens.space26)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
