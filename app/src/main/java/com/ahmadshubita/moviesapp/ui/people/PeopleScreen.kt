@@ -7,13 +7,12 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
@@ -24,6 +23,8 @@ import com.ahmadshubita.moviesapp.ui.core.common.DefaultProgressBar
 import com.ahmadshubita.moviesapp.ui.movies.CategoryTitle
 import com.ahmadshubita.moviesapp.ui.people.viewmodel.PeopleViewModel
 import com.ahmadshubita.moviesapp.ui.theme.dimens
+import com.ahmadshubita.moviesapp.ui.util.SnackBarBuilder
+import com.ahmadshubita.moviesapp.ui.util.SnackBarStatus
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -33,28 +34,21 @@ fun PeopleScreen(
     val peopleScreenState by viewModel.uiState.collectAsState()
     val peopleItems = peopleScreenState.peopleItems.collectAsLazyPagingItems()
 
+    val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(modifier =
-    Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)) {
+    /**
+     * This code is used to initialize the SnackBarBuilder and all its properties
+     */
+    val snackBarBuilder = SnackBarBuilder()
+    snackBarBuilder.snackBarHostState = remember { SnackbarHostState() }
+    snackBarBuilder.ConnectivityAwareSnackBar()
+
+    Scaffold(containerColor = MaterialTheme.colorScheme.surface) {
         if (!peopleScreenState.isErrorState.value && !peopleScreenState.isLoadingState.value) {
             Column(Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface)
             ) {
-                Row(
-                        modifier = Modifier
-                                .padding(top = 16.dp, bottom = 20.dp, start = 16.dp, end = 16.dp)
-                                .background(MaterialTheme.colorScheme.surface),
-                        verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    CategoryTitle(title = "PEOPLE", MaterialTheme.typography.titleLarge)
-                }
-                Spacer(modifier = Modifier
-                        .height(10.dp)
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.background))
                 key(peopleItems.loadState) {
                     when (peopleItems.loadState.refresh) {
                         is LoadState.Error -> {
@@ -68,6 +62,18 @@ fun PeopleScreen(
                         else -> {}
                     }
                 }
+                Row(
+                        modifier = Modifier
+                                .padding(top = 16.dp, bottom = 20.dp, start = 16.dp, end = 16.dp)
+                                .background(MaterialTheme.colorScheme.surface),
+                        verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    CategoryTitle(title = "PEOPLE", MaterialTheme.typography.titleLarge)
+                }
+                Spacer(modifier = Modifier
+                        .height(10.dp)
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background))
                 LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(start = dimens.space16)
                 ) {
                     items(peopleItems.itemCount) { item ->
@@ -83,11 +89,9 @@ fun PeopleScreen(
 
                     when (peopleItems.loadState.append) {
                         is LoadState.Loading -> {
-                            item {}
-                        }
-
-                        is LoadState.Error -> {
-                            item {}
+                            item {
+                                DefaultProgressBar()
+                            }
                         }
 
                         else -> {}
@@ -98,6 +102,15 @@ fun PeopleScreen(
             DefaultProgressBar()
         } else {
             DefaultErrorLayout()
+            snackBarBuilder.showSnackBar(
+                    coroutineScope = coroutineScope,
+                    status = SnackBarStatus.ERROR,
+                    message = stringResource(id = com.ahmadshubita.moviesapp.R.string.some_thing_went_wrong),
+                    throwable = null ,
+                    actionLabel = stringResource(id = com.ahmadshubita.moviesapp.R.string.retry)
+            ) {
+                viewModel.onRefreshData()
+            }
         }
     }
 }

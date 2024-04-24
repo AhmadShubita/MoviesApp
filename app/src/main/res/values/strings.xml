@@ -10,4 +10,8 @@
     <string name="all_items_capital">ALL MOVIES</string>
     <string name="new_text">NEW</string>
     <string name="popular">POPULAR</string>
+    <string name="connected">Connected</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="something_went_wrong">Something went wrong please try again.</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     )
                 } else {
                     SystemBarStyle.light(
-                        android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT
+                        android.graphics.Color.WHITE, android.graphics.Color.WHITE
                     )
                 }
             )

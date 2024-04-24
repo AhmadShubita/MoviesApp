@@ -24,7 +24,7 @@ class DetailsViewModel @Inject constructor(
 
     private fun getDetails() {
         val detailsType = detailsScreenArgs.detailsType
-        tryToExecute(
+        execute(
             call = {
                 if (detailsType == DetailsType.TV_DETAILS) {
                     mainRepository.getTvSeriesById(detailsScreenArgs.id.trim().toInt())
@@ -42,7 +42,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     private fun onGetDetails(detailsItem: DetailsItem) {
-        _uiState.update {
+        uiMutableState.update {
             it.copy(
                 isLoadingState = mutableStateOf(false),
                 isErrorState = mutableStateOf(false),
@@ -52,7 +52,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     private fun onError() {
-        _uiState.update {
+        uiMutableState.update {
             it.copy(
                 isLoadingState = mutableStateOf(false),
                 isErrorState = mutableStateOf(true)
