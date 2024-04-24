@@ -1,6 +1,7 @@
 package com.ahmadshubita.moviesapp.ui.core.common
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +26,7 @@ fun DefaultErrorLayout() {
     Column(
         modifier = Modifier
             .heightIn(min = 240.dp)
-            .fillMaxSize(),
+            .fillMaxSize().background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

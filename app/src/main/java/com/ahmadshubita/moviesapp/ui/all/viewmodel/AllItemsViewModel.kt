@@ -27,7 +27,7 @@ class AllItemsViewModel @Inject constructor(
 
     private fun getMovies() {
         val isPopularItemsScreen = allItemsScreenArgs.isPopularItemsScreen
-        tryToExecutePaging(
+        executePaging(
                 call = {
                     if (isPopularItemsScreen) {
                         mainRepository.getPopularMoviesPaging(LANGUAGE_TYPE, 1)
@@ -44,7 +44,7 @@ class AllItemsViewModel @Inject constructor(
 
     private fun onGetMovies(peopleList: PagingData<Movie>) {
         val filteredList = peopleList.filter { !it.posterPath.isNullOrBlank() }
-        _uiState.update {
+        uiMutableState.update {
             it.copy(
                     isLoadingState = mutableStateOf(false),
                     isErrorState = mutableStateOf(false),
@@ -54,7 +54,7 @@ class AllItemsViewModel @Inject constructor(
     }
 
     private fun onError() {
-        _uiState.update { it.copy(isLoadingState = mutableStateOf(false), isErrorState = mutableStateOf(true)) }
+        uiMutableState.update { it.copy(isLoadingState = mutableStateOf(false), isErrorState = mutableStateOf(true)) }
     }
 
     fun onRefreshData() {

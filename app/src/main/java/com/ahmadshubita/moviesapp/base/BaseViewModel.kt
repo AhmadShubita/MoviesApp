@@ -4,6 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.ahmadshubita.moviesapp.data.remote.utils.NetworkException
+import com.ahmadshubita.moviesapp.data.remote.utils.MoviesAppException
+import com.ahmadshubita.moviesapp.data.remote.utils.NullDataException
+import com.ahmadshubita.moviesapp.data.remote.utils.RateLimitExceededException
+import com.ahmadshubita.moviesapp.data.remote.utils.UnAuthorizedException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -14,51 +19,65 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 
-abstract class BaseViewModel<STATE, UiEffect>(initState: STATE): ViewModel() {
+abstract class BaseViewModel<STATE, UiEffect>(initState: STATE) : ViewModel() {
 
-    protected val _uiState: MutableStateFlow<STATE> by lazy { MutableStateFlow(initState) }
-    val uiState = _uiState.asStateFlow()
+    protected val uiMutableState: MutableStateFlow<STATE> by lazy { MutableStateFlow(initState) }
+    val uiState = uiMutableState.asStateFlow()
 
-    protected val _uiEffect = MutableSharedFlow<UiEffect>()
-    val uiEffect = _uiEffect.asSharedFlow()
+    protected val uiMutableEffect = MutableSharedFlow<UiEffect>()
+    val uiEffect = uiMutableEffect.asSharedFlow()
 
-    fun <T> tryToExecute(
-        call: suspend () -> T,
-        onSuccess: (T) -> Unit,
-        onError: (Throwable) -> Unit,
-        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    fun <T> execute(
+            call: suspend () -> T,
+            onSuccess: (T) -> Unit,
+            onError: (Throwable) -> Unit,
+            dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
         viewModelScope.launch(dispatcher) {
             try {
                 call().also(onSuccess)
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
+                onError(e)
+            } catch (e: UnAuthorizedException) {
+                onError(e)
+            } catch (e: NullDataException) {
+                onError(e)
+            } catch (e: RateLimitExceededException) {
+                onError(e)
+            } catch (e: MoviesAppException) {
                 onError(e)
             }
         }
     }
 
-    fun <T1, T2, T3> tryToExecuteConcurrently(
-        call1: suspend () -> T1,
-        call2: suspend () -> T2,
-        call3: suspend () -> T3,
-        onSuccess: (T1, T2, T3) -> Unit,
-        onError: (Throwable) -> Unit,
-        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    suspend fun <T1, T2, T3> executeConcurrently(
+            call1: suspend () -> T1,
+            call2: suspend () -> T2,
+            call3: suspend () -> T3,
+            onSuccess: (T1, T2, T3) -> Unit,
+            onError: (Throwable) -> Unit,
+            dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
-        viewModelScope.launch(dispatcher) {
+        supervisorScope {
             try {
-                val result1 = async { call1() }.await()
-                val result2 = async { call2() }.await()
-                val result3 = async { call3() }.await()
-                onSuccess(result1, result2, result3)
-            } catch (e: Exception) {
+                val result1 = async(dispatcher) { call1() }
+                val result2 = async(dispatcher) { call2() }
+                val result3 = async(dispatcher) { call3() }
+
+                val r1 = result1.await()
+                val r2 = result2.await()
+                val r3 = result3.await()
+
+                onSuccess(r1, r2, r3)
+            } catch (e: Throwable) {
                 onError(e)
             }
         }
     }
 
-    fun <T : Any> tryToExecutePaging(
+    fun <T : Any> executePaging(
             call: suspend () -> Flow<PagingData<T>>,
             onSuccess: suspend (PagingData<T>) -> Unit,
             onError: (Throwable) -> Unit,
@@ -70,25 +89,34 @@ abstract class BaseViewModel<STATE, UiEffect>(initState: STATE): ViewModel() {
                 result.collect { data ->
                     onSuccess(data)
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
+                onError(e)
+            } catch (e: UnAuthorizedException) {
+                onError(e)
+            } catch (e: NullDataException) {
+                onError(e)
+            } catch (e: RateLimitExceededException) {
+                onError(e)
+            } catch (e: MoviesAppException) {
                 onError(e)
             }
+
         }
     }
 
     protected fun <T> collectFlow(
-        flow: Flow<T>,
-        updateState: STATE.(T) -> STATE
+            flow: Flow<T>,
+            updateState: STATE.(T) -> STATE
     ) {
         viewModelScope.launch {
             flow.collect { value ->
-                _uiState.update { it.updateState(value) }
+                uiMutableState.update { it.updateState(value) }
             }
         }
     }
 
     protected fun triggerUiEffect(effect: UiEffect) {
-        viewModelScope.launch { _uiEffect.emit(effect) }
+        viewModelScope.launch { uiMutableEffect.emit(effect) }
     }
 
     interface BaseUiEffect

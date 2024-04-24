@@ -9,6 +9,7 @@ import com.ahmadshubita.moviesapp.data.remote.repo.MainRepository
 import com.ahmadshubita.moviesapp.ui.bottombar.DetailsType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -19,11 +20,11 @@ class TvViewModel @Inject constructor(private val mainRepository: MainRepository
     ) {
 
     init {
-        getTvTopRated()
+        onRefreshData()
     }
 
     private fun getTvTopRated() {
-        tryToExecutePaging(call = { mainRepository.getTvTopRated(LANGUAGE_TYPE, 1) },
+        executePaging(call = { mainRepository.getTvTopRated(LANGUAGE_TYPE, 1) },
             onSuccess = { response ->
                 onGetTvTopRated(response)
             },
@@ -32,7 +33,7 @@ class TvViewModel @Inject constructor(private val mainRepository: MainRepository
 
     private fun onGetTvTopRated(tvTopRatedList: PagingData<Tv>) {
         val filteredList = tvTopRatedList.filter { !it.posterPath.isNullOrBlank() }
-        _uiState.update {
+        uiMutableState.update {
             it.copy(
                 isLoadingState = mutableStateOf(false),
                 isErrorState = mutableStateOf(false),
@@ -42,11 +43,16 @@ class TvViewModel @Inject constructor(private val mainRepository: MainRepository
     }
 
     private fun onError() {
-        _uiState.update {
+        uiMutableState.update {
             it.copy(
-                isLoadingState = mutableStateOf(false), isErrorState = mutableStateOf(true)
+                    isLoadingState = mutableStateOf(false),
+                    isErrorState = mutableStateOf(true),
             )
         }
+    }
+
+    fun onRefreshData(){
+        getTvTopRated()
     }
 
     fun onMovieItemClick(detailsType: DetailsType, id: Int) {
