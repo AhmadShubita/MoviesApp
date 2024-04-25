@@ -1,10 +1,13 @@
 package com.ahmadshubita.moviesapp.data.remote.core
 
+import com.ahmadshubita.moviesapp.data.models.MovieDetails
 import com.ahmadshubita.moviesapp.data.models.MoviesResponse
 import com.ahmadshubita.moviesapp.data.models.PeopleResponse
+import com.ahmadshubita.moviesapp.data.models.Series
 import com.ahmadshubita.moviesapp.data.models.TvResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 
@@ -15,8 +18,8 @@ interface MainServices {
         @Query("page") page: Int
     ): Response<MoviesResponse>
 
-    @GET("movie/now_playing")
-    suspend fun getNowPlayingMovies(
+    @GET("movie/upcoming")
+    suspend fun getUpcomingMovies(
         @Query("language") language: String,
         @Query("page") page: Int
     ): Response<MoviesResponse>
@@ -38,4 +41,14 @@ interface MainServices {
         @Query("language") language: String,
         @Query("page") page: Int
     ): Response<PeopleResponse>
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieById(
+        @Path("movie_id") movieId: Int
+    ): Response<MovieDetails>
+
+    @GET("tv/{tv_id}")
+    suspend fun getTvById(
+        @Path("tv_id") tvId: Int
+    ): Response<Series>
 }

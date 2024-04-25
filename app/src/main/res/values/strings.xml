@@ -1,7 +1,22 @@
 <resources>
     <string name="app_name">MoviesApp</string>
-    <string name="movies">Movies</string>
-    <string name="tv">Tv</string>
-    <string name="people">People</string>
     <string name="some_thing_went_wrong">Some thing went wrong</string>
+    <string name="movies">Movies</string>
+    <string name="people">People</string>
+    <string name="tv">Tv</string>
+    <string name="movies_capital">MOVIES</string>
+    <string name="tv_capital">TV</string>
+    <string name="people_capital">PEOPLE</string>
+    <string name="all_items_capital">ALL MOVIES</string>
+    <string name="new_text">NEW</string>
+    <string name="popular">POPULAR</string>
+    <string name="connected">Connected</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="something_went_wrong">Something went wrong please try again.</string>
+    <string name="retry">Retry</string>
+    <string name="this_feature_not_implemented">This Feature Not Implemented Yet, Coming Soon</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="view_all">View All</string>
+    <string name="refresh">Refresh</string>
+
 </resources>

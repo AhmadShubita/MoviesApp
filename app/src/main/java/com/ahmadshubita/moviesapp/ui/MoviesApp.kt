@@ -3,6 +3,7 @@ package com.ahmadshubita.moviesapp.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -47,11 +48,12 @@ fun MoviesApp(isDarkTheme: Boolean) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
 
-            Scaffold(modifier = Modifier.padding(),
+            Scaffold(
                 containerColor = Color.Transparent,
                 contentColor = MaterialTheme.colorScheme.background,
                 bottomBar = {
-                    AnimatedVisibility(visible = bottomBarVisibility.value,
+                    AnimatedVisibility(
+                            visible = bottomBarVisibility.value,
                         enter = slideInVertically(initialOffsetY = { it }),
                         exit = slideOutVertically(targetOffsetY = { it }),
                         content = {
