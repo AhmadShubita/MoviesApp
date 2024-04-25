@@ -103,18 +103,16 @@ fun AllItemsContent(
             containerColor = MaterialTheme.colorScheme.surface
     ) {
         if (!state.isErrorState.value && !state.isLoadingState.value) {
-            Column(
-                    Modifier
-                            .fillMaxSize()
-                            .padding(it)
-                            .background(MaterialTheme.colorScheme.surface)
+            Column(Modifier
+                    .fillMaxSize()
+                    .padding(it)
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
 
-                Spacer(
-                        modifier = Modifier
-                                .height(10.dp)
-                                .fillMaxWidth()
-                                .background(MaterialTheme.colorScheme.background)
+                Spacer(modifier = Modifier
+                        .height(dimens.space10)
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background)
                 )
                 key(moviesItems.loadState) {
                     when (moviesItems.loadState.refresh) {
