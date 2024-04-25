@@ -23,23 +23,20 @@ import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
 fun DefaultErrorLayout() {
-    Column(
-        modifier = Modifier
+    Column(modifier = Modifier
             .heightIn(min = 240.dp)
-            .fillMaxSize().background(MaterialTheme.colorScheme.background),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_error),
-            contentDescription = "",
-            modifier = Modifier.size(100.dp)
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_error),
+                contentDescription = "",
+                modifier = Modifier.size(100.dp)
         )
         Spacer(modifier = Modifier.size(10.dp))
-        Text(
-            text = stringResource(R.string.some_thing_went_wrong),
-            style = MaterialTheme.typography.titleMedium
-        )
+        Text(text = stringResource(R.string.some_thing_went_wrong), style = MaterialTheme.typography.titleMedium)
     }
 }
 
