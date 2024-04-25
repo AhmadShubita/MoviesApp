@@ -105,7 +105,7 @@ fun TvContent(
                                 .background(MaterialTheme.colorScheme.surface),
                         verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    CategoryTitle(title = "TV", MaterialTheme.typography.titleLarge)
+                    CategoryTitle(title = stringResource(id = R.string.tv), MaterialTheme.typography.titleLarge)
                 }
                 Spacer(
                         modifier = Modifier

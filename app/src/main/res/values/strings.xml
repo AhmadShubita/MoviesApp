@@ -15,4 +15,6 @@
     <string name="something_went_wrong">Something went wrong please try again.</string>
     <string name="retry">Retry</string>
     <string name="this_feature_not_implemented">This Feature Not Implemented Yet, Coming Soon</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="view_all">View All</string>
 </resources>

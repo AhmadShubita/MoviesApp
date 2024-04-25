@@ -104,7 +104,7 @@ fun MoviesContent(
                                 .background(MaterialTheme.colorScheme.surface),
                         verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    CategoryTitle(title = "MOVIES", MaterialTheme.typography.titleLarge)
+                    CategoryTitle(title = stringResource(id = R.string.movies), MaterialTheme.typography.titleLarge)
                     Spacer(modifier = Modifier.weight(1f))
                     CustomSwitch(checked = isDarkTheme, onCheckedChange = { darkTheme ->
                         viewModel.switchTheme(darkTheme)
@@ -125,13 +125,13 @@ fun MoviesContent(
                             contentPadding = PaddingValues(0.dp)
                     ) {
                         items(moviesScreenState.topRatedMoviesItems.size) { item ->
-                            MoviesMainCard(moviesScreenState.topRatedMoviesItems[item].posterImageUrl,
-                                    onClick = {
-                                        viewModel.onMovieItemClick(
-                                                DetailsType.MOVIE_DETAILS,
-                                                moviesScreenState.topRatedMoviesItems[item].id
-                                        )
-                                    })
+                            MoviesMainCard(moviesScreenState.topRatedMoviesItems[item].posterImageUrl
+                            ) {
+                                viewModel.onMovieItemClick(
+                                        DetailsType.MOVIE_DETAILS,
+                                        moviesScreenState.topRatedMoviesItems[item].id
+                                )
+                            }
                         }
                     }
                     Row(
@@ -142,7 +142,7 @@ fun MoviesContent(
                             verticalAlignment = Alignment.CenterVertically,
                     ) {
                         CategoryTitle(
-                                title = "Upcoming",
+                                title = stringResource(id = R.string.upcoming),
                                 MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -150,7 +150,7 @@ fun MoviesContent(
                         TextButton(modifier = Modifier.wrapContentWidth(),
                                 onClick = { viewModel.navigateAllItemsScreen(false) }) {
                             Text(
-                                    text = "View All",
+                                    text = stringResource(id = R.string.view_all),
                                     textAlign = TextAlign.Start,
                                     style = MaterialTheme.typography.titleSmall,
                                     color = MaterialTheme.colorScheme.primary
@@ -182,7 +182,7 @@ fun MoviesContent(
                     Row(
                             modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(start = 16.dp),
+                                    .padding(start = dimens.space16),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -206,9 +206,9 @@ fun MoviesContent(
                             modifier = Modifier
                                     .fillMaxWidth()
                                     .height(480.dp)
-                                    .padding(start = 10.dp),
+                                    .padding(start = dimens.space10),
                             rows = GridCells.Fixed(2),
-                            contentPadding = PaddingValues(6.dp)
+                            contentPadding = PaddingValues(dimens.space6)
                     ) {
                         items(moviesScreenState.popularMoviesItems.size) { item ->
                             MainListCard(

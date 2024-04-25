@@ -79,7 +79,7 @@ fun PeopleScreen(
                 }
                 Row(
                         modifier = Modifier
-                                .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp)
+                                .padding(top = dimens.space20, bottom = dimens.space20, start = dimens.space16, end = dimens.space16)
                                 .background(MaterialTheme.colorScheme.surface),
                         verticalAlignment = Alignment.CenterVertically,
                 ) {
