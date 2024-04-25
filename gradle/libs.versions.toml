@@ -25,6 +25,8 @@ splashScreen = "1.0.0"
 glide = "1.0.0-beta01"
 coil = "2.5.0"
 dataStore = "1.0.0"
+paging-compose = "3.2.1"
+paging = "3.2.1"
 [libraries]
 # Accompanist
 accompanist-permission = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -74,6 +76,11 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 # Splash Screen
 splash-screen = { group = "androidx.core", name= "core-splashscreen", version.ref = "splashScreen" }
+# Paging
+paging = {group ="androidx.paging", name = "paging-common-ktx", version.ref = "paging"}
+paging-runtime = {group ="androidx.paging", name = "paging-runtime-ktx", version.ref = "paging"}
+paging-compose = {group ="androidx.paging", name = "paging-compose", version.ref = "paging-compose"}
+
 #Glide
 glide = { group = "com.github.bumptech.glide", name= "compose", version.ref = "glide" }
 # Tests

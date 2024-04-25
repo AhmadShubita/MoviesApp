@@ -1,8 +1,9 @@
 package com.ahmadshubita.moviesapp.data.remote.repo
 
-import com.ahmadshubita.moviesapp.data.models.MoviesResponse
-import com.ahmadshubita.moviesapp.data.models.PeopleResponse
-import com.ahmadshubita.moviesapp.data.models.TvResponse
+import androidx.paging.PagingData
+import com.ahmadshubita.moviesapp.data.models.*
+import com.ahmadshubita.moviesapp.ui.movies.details.model.DetailsItem
+import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
     suspend fun getTopRatedMovies(
@@ -20,13 +21,31 @@ interface MainRepository {
         page: Int
     ): MoviesResponse
 
+    suspend fun getNowPlayingMoviesPaging(
+            language: String,
+            page: Int
+    ): Flow<PagingData<Movie>>
+
+    suspend fun getPopularMoviesPaging(
+            language: String,
+            page: Int
+    ): Flow<PagingData<Movie>>
+
     suspend fun getTvTopRated(
         language: String,
         page: Int
-    ): TvResponse
+    ): Flow<PagingData<Tv>>
 
     suspend fun getPeople(
         language: String,
         page: Int
-    ): PeopleResponse
+    ): Flow<PagingData<People>>
+
+    suspend fun getMovieById(
+        movieId: Int
+    ): DetailsItem
+
+    suspend fun getTvSeriesById(
+        tvId: Int
+    ): DetailsItem
 }

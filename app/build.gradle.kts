@@ -110,6 +110,11 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.compose.coil)
 
+    // Paging
+    implementation(libs.paging)
+    implementation(libs.paging.compose)
+    implementation(libs.paging.runtime)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.ext)
     androidTestImplementation(libs.espresso.core)
