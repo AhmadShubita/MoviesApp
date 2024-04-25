@@ -79,7 +79,7 @@ fun PeopleScreen(
                 }
                 Row(
                         modifier = Modifier
-                                .padding(top = 16.dp, bottom = 20.dp, start = 16.dp, end = 16.dp)
+                                .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp)
                                 .background(MaterialTheme.colorScheme.surface),
                         verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -89,7 +89,10 @@ fun PeopleScreen(
                         .height(10.dp)
                         .fillMaxWidth()
                         .background(MaterialTheme.colorScheme.background))
-                LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(start = dimens.space16)
+                LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(start = dimens.space16),
+                        modifier = Modifier.background(MaterialTheme.colorScheme.background)
                 ) {
                     items(peopleItems.itemCount) { item ->
                         MainListCard(
