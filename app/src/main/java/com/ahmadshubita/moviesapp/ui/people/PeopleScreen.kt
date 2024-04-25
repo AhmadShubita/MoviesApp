@@ -11,8 +11,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
@@ -44,7 +44,12 @@ fun PeopleScreen(
     snackBarBuilder.snackBarHostState = remember { SnackbarHostState() }
     snackBarBuilder.ConnectivityAwareSnackBar()
 
-    Scaffold(containerColor = MaterialTheme.colorScheme.surface) {
+    val notImplemented = stringResource(id = R.string.this_feature_not_implemented)
+
+    Scaffold(
+            snackbarHost = { snackBarBuilder.SnackBarHost() },
+            containerColor = MaterialTheme.colorScheme.surface
+    ) {
         if (!peopleScreenState.isErrorState.value && !peopleScreenState.isLoadingState.value) {
             Column(Modifier
                     .fillMaxSize()
@@ -94,7 +99,14 @@ fun PeopleScreen(
                                 path = peopleItems[item]?.profileImageUrl ?: "",
                                 isPeople = true,
                                 isWrapContent = true,
-                                onClick = {})
+                                onClick = {
+                                    snackBarBuilder.showSnackBar(
+                                            coroutineScope = coroutineScope,
+                                            status = SnackBarStatus.DEFAULT,
+                                            message = notImplemented,
+                                            throwable = null,
+                                    )
+                                })
                     }
 
                     when (peopleItems.loadState.append) {
@@ -119,9 +131,9 @@ fun PeopleScreen(
             snackBarBuilder.showSnackBar(
                     coroutineScope = coroutineScope,
                     status = SnackBarStatus.ERROR,
-                    message = stringResource(id = com.ahmadshubita.moviesapp.R.string.some_thing_went_wrong),
-                    throwable = null ,
-                    actionLabel = stringResource(id = com.ahmadshubita.moviesapp.R.string.retry)
+                    message = stringResource(id = R.string.some_thing_went_wrong),
+                    throwable = null,
+                    actionLabel = stringResource(id = R.string.retry)
             ) {
                 viewModel.onRefreshData()
             }

@@ -73,7 +73,6 @@ fun AllItemsContent(
     snackBarBuilder.snackBarHostState = remember { SnackbarHostState() }
     snackBarBuilder.ConnectivityAwareSnackBar()
 
-
     Scaffold(
             modifier = Modifier.fillMaxSize(),
             snackbarHost = { snackBarBuilder.SnackBarHost() },
