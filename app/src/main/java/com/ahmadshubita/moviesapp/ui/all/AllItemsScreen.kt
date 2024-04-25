@@ -4,18 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -40,12 +30,13 @@ import com.ahmadshubita.moviesapp.ui.core.common.DefaultProgressBar
 import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 import com.ahmadshubita.moviesapp.ui.theme.dimens
 import com.ahmadshubita.moviesapp.ui.util.HandleUiEffect
+import com.ahmadshubita.moviesapp.ui.util.SnackBarBuilder
+import com.ahmadshubita.moviesapp.ui.util.SnackBarStatus
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllItemsScreen(
-    navController: NavController, viewModel: AllItemsViewModel = hiltViewModel()
+        navController: NavController, viewModel: AllItemsViewModel = hiltViewModel()
 ) {
 
     val allItemsScreenState by viewModel.uiState.collectAsState()
@@ -57,8 +48,8 @@ fun AllItemsScreen(
 
             is AllItemsUiEffect.NavigateToDetails -> {
                 navController.navigateToDetailsScreen(
-                    it.detailsType,
-                    it.id
+                        it.detailsType,
+                        it.id
                 )
             }
         }
@@ -69,55 +60,76 @@ fun AllItemsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllItemsContent(
-    state: AllItemsScreenState, viewModel: AllItemsViewModel = hiltViewModel()
+        state: AllItemsScreenState, viewModel: AllItemsViewModel = hiltViewModel()
 ) {
     val moviesItems = state.moviesItems.collectAsLazyPagingItems()
 
-    Scaffold(modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background),
-        topBar = {
-            TopAppBar(modifier = Modifier
-                .wrapContentSize()
-                .shadow(4.dp),
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.all_items_capital),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { viewModel.onClickBackButton() }) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-                })
-        }) {
+    val coroutineScope = rememberCoroutineScope()
+
+    /**
+     * This code is used to initialize the SnackBarBuilder and all its properties
+     */
+    val snackBarBuilder = SnackBarBuilder()
+    snackBarBuilder.snackBarHostState = remember { SnackbarHostState() }
+    snackBarBuilder.ConnectivityAwareSnackBar()
+
+
+    Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            snackbarHost = { snackBarBuilder.SnackBarHost() },
+            topBar = {
+                TopAppBar(modifier = Modifier
+                        .wrapContentSize()
+                        .shadow(4.dp),
+                        colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.surface,
+                        ),
+                        title = {
+                            Text(
+                                    text = stringResource(id = R.string.all_items_capital),
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleLarge
+                            )
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = { viewModel.onClickBackButton() }) {
+                                Icon(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
+                                        contentDescription = "",
+                                        tint = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
+                        })
+            },
+            containerColor = MaterialTheme.colorScheme.surface
+    ) {
         if (!state.isErrorState.value && !state.isLoadingState.value) {
             Column(
-                Modifier
-                    .fillMaxSize()
-                    .padding(it)
-                    .background(MaterialTheme.colorScheme.surface)
+                    Modifier
+                            .fillMaxSize()
+                            .padding(it)
+                            .background(MaterialTheme.colorScheme.surface)
             ) {
 
                 Spacer(
-                    modifier = Modifier
-                        .height(10.dp)
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.background)
+                        modifier = Modifier
+                                .height(10.dp)
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.background)
                 )
                 key(moviesItems.loadState) {
                     when (moviesItems.loadState.refresh) {
                         is LoadState.Error -> {
                             DefaultErrorLayout()
+                            snackBarBuilder.showSnackBar(
+                                    coroutineScope = coroutineScope,
+                                    status = SnackBarStatus.ERROR,
+                                    message = stringResource(id = R.string.some_thing_went_wrong),
+                                    throwable = null,
+                                    actionLabel = stringResource(id = R.string.retry)
+                            ) {
+                                viewModel.onRefreshData()
+                            }
                         }
 
                         is LoadState.Loading -> {
@@ -128,30 +140,32 @@ fun AllItemsContent(
                     }
                 }
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(start = dimens.space16)
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(start = dimens.space16)
                 ) {
                     items(moviesItems.itemCount) { item ->
                         MainListCard(title = moviesItems[item]?.title ?: "",
-                            year = moviesItems[item]?.releaseYear ?: "",
-                            rating = moviesItems[item]?.rating ?: "",
-                            path = moviesItems[item]?.posterImageUrl ?: "",
-                            isWrapContent = true,
-                            onClick = {
-                                viewModel.onMovieItemClick(
-                                    DetailsType.MOVIE_DETAILS,
-                                    moviesItems[item]?.id ?: 0
-                                )
-                            })
+                                year = moviesItems[item]?.releaseYear ?: "",
+                                rating = moviesItems[item]?.rating ?: "",
+                                path = moviesItems[item]?.posterImageUrl ?: "",
+                                isWrapContent = true,
+                                onClick = {
+                                    viewModel.onMovieItemClick(
+                                            DetailsType.MOVIE_DETAILS,
+                                            moviesItems[item]?.id ?: 0
+                                    )
+                                })
                     }
 
                     when (moviesItems.loadState.append) {
                         is LoadState.Loading -> {
-                            item {}
+                            item {
+                                DefaultProgressBar()
+                            }
                         }
 
                         is LoadState.Error -> {
-                            item {}
+                            // TODO Add error item with retry button
                         }
 
                         else -> {}
@@ -162,6 +176,15 @@ fun AllItemsContent(
             DefaultProgressBar()
         } else {
             DefaultErrorLayout()
+            snackBarBuilder.showSnackBar(
+                    coroutineScope = coroutineScope,
+                    status = SnackBarStatus.ERROR,
+                    message = stringResource(id = R.string.some_thing_went_wrong),
+                    throwable = null,
+                    actionLabel = stringResource(id = R.string.retry)
+            ) {
+                viewModel.onRefreshData()
+            }
         }
     }
 }

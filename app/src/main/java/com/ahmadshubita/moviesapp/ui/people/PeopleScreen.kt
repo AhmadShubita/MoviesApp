@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.ahmadshubita.moviesapp.R
 import com.ahmadshubita.moviesapp.ui.components.MainListCard
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultErrorLayout
 import com.ahmadshubita.moviesapp.ui.core.common.DefaultProgressBar
@@ -53,6 +54,15 @@ fun PeopleScreen(
                     when (peopleItems.loadState.refresh) {
                         is LoadState.Error -> {
                             DefaultErrorLayout()
+                            snackBarBuilder.showSnackBar(
+                                    coroutineScope = coroutineScope,
+                                    status = SnackBarStatus.ERROR,
+                                    message = stringResource(id = R.string.some_thing_went_wrong),
+                                    throwable = null,
+                                    actionLabel = stringResource(id = R.string.retry)
+                            ) {
+                                viewModel.onRefreshData()
+                            }
                         }
 
                         is LoadState.Loading -> {
@@ -92,6 +102,10 @@ fun PeopleScreen(
                             item {
                                 DefaultProgressBar()
                             }
+                        }
+
+                        is LoadState.Error -> {
+                            // TODO Add error item with retry button
                         }
 
                         else -> {}

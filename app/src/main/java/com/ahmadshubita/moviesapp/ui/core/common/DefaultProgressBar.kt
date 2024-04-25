@@ -15,10 +15,9 @@ import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
 fun DefaultProgressBar() {
-    Box(
-            modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center
+    Box(modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(modifier = Modifier.size(50.dp))
     }
