@@ -27,7 +27,7 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getNowPlayingMovies(language: String, page: Int): MoviesResponse {
         return wrapApiCall {
-            mainServices.getNowPlayingMovies(language, page)
+            mainServices.getUpcomingMovies(language, page)
         }
     }
 

@@ -18,8 +18,8 @@ interface MainServices {
         @Query("page") page: Int
     ): Response<MoviesResponse>
 
-    @GET("movie/now_playing")
-    suspend fun getNowPlayingMovies(
+    @GET("movie/upcoming")
+    suspend fun getUpcomingMovies(
         @Query("language") language: String,
         @Query("page") page: Int
     ): Response<MoviesResponse>
