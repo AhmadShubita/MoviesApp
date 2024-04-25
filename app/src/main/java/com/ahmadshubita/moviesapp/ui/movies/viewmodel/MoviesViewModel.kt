@@ -55,7 +55,7 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    fun onReloadDate() {
+    fun onRefreshData() {
         getTopRatedMovies()
     }
 

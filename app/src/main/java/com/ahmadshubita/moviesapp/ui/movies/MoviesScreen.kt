@@ -187,7 +187,7 @@ fun MoviesContent(
                             verticalAlignment = Alignment.CenterVertically,
                     ) {
                         CategoryTitle(
-                                title = "Popular",
+                                title = stringResource(id = R.string.popular),
                                 MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -195,7 +195,7 @@ fun MoviesContent(
                         TextButton(modifier = Modifier.wrapContentWidth(),
                                 onClick = { viewModel.navigateAllItemsScreen(true) }) {
                             Text(
-                                    text = "View All",
+                                    text = stringResource(id = R.string.view_all),
                                     textAlign = TextAlign.Start,
                                     style = MaterialTheme.typography.titleSmall,
                                     color = MaterialTheme.colorScheme.primary
@@ -231,7 +231,9 @@ fun MoviesContent(
         } else if (moviesScreenState.isLoadingState.value) {
             DefaultProgressBar()
         } else {
-            DefaultErrorLayout()
+            DefaultErrorLayout{
+                viewModel.onRefreshData()
+            }
             snackBarBuilder.showSnackBar(
                     coroutineScope = coroutineScope,
                     status = SnackBarStatus.ERROR,
@@ -239,7 +241,7 @@ fun MoviesContent(
                     throwable = null,
                     actionLabel = stringResource(id = R.string.retry)
             ) {
-                viewModel.onReloadDate()
+                viewModel.onRefreshData()
             }
         }
     }

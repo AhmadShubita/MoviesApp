@@ -58,7 +58,9 @@ fun PeopleScreen(
                 key(peopleItems.loadState) {
                     when (peopleItems.loadState.refresh) {
                         is LoadState.Error -> {
-                            DefaultErrorLayout()
+                            DefaultErrorLayout{
+                                viewModel.onRefreshData()
+                            }
                             snackBarBuilder.showSnackBar(
                                     coroutineScope = coroutineScope,
                                     status = SnackBarStatus.ERROR,
@@ -130,7 +132,9 @@ fun PeopleScreen(
         } else if (peopleScreenState.isLoadingState.value) {
             DefaultProgressBar()
         } else {
-            DefaultErrorLayout()
+            DefaultErrorLayout{
+                viewModel.onRefreshData()
+            }
             snackBarBuilder.showSnackBar(
                     coroutineScope = coroutineScope,
                     status = SnackBarStatus.ERROR,

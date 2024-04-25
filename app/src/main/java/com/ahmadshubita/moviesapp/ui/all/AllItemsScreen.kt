@@ -117,7 +117,9 @@ fun AllItemsContent(
                 key(moviesItems.loadState) {
                     when (moviesItems.loadState.refresh) {
                         is LoadState.Error -> {
-                            DefaultErrorLayout()
+                            DefaultErrorLayout{
+                                viewModel.onRefreshData()
+                            }
                             snackBarBuilder.showSnackBar(
                                     coroutineScope = coroutineScope,
                                     status = SnackBarStatus.ERROR,
@@ -172,7 +174,9 @@ fun AllItemsContent(
         } else if (state.isLoadingState.value) {
             DefaultProgressBar()
         } else {
-            DefaultErrorLayout()
+            DefaultErrorLayout{
+                viewModel.onRefreshData()
+            }
             snackBarBuilder.showSnackBar(
                     coroutineScope = coroutineScope,
                     status = SnackBarStatus.ERROR,
