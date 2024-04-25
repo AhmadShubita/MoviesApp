@@ -17,4 +17,6 @@
     <string name="this_feature_not_implemented">This Feature Not Implemented Yet, Coming Soon</string>
     <string name="upcoming">Upcoming</string>
     <string name="view_all">View All</string>
+    <string name="refresh">Refresh</string>
+
 </resources>

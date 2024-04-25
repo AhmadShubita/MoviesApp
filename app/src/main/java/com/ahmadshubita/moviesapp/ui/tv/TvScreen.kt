@@ -80,7 +80,9 @@ fun TvContent(
                 key(topRatedTvItems.loadState) {
                     when (topRatedTvItems.loadState.refresh) {
                         is LoadState.Error -> {
-                            DefaultErrorLayout()
+                            DefaultErrorLayout{
+                                viewModel.onRefreshData()
+                            }
                             snackBarBuilder.showSnackBar(
                                     coroutineScope = coroutineScope,
                                     status = SnackBarStatus.ERROR,
@@ -153,7 +155,9 @@ fun TvContent(
         } else if (tvScreenState.isLoadingState.value) {
             DefaultProgressBar()
         } else {
-            DefaultErrorLayout()
+            DefaultErrorLayout{
+                viewModel.onRefreshData()
+            }
             snackBarBuilder.showSnackBar(
                     coroutineScope = coroutineScope,
                     status = SnackBarStatus.ERROR,

@@ -73,17 +73,19 @@ val bottomBarItems = listOf(
                 selectedIcon = R.drawable.ic_movies_seleced,
                 unselectedIcon = R.drawable.ic_movies_unselected,
                 bottomStringRes = R.string.movies
-        ), MainDestination(
-        route = TvDestination.route,
-        selectedIcon = R.drawable.ic_tv_selected,
-        unselectedIcon = R.drawable.ic_tv_unselected,
-        bottomStringRes = R.string.tv
-), MainDestination(
-        route = PeoplesDestination.route,
-        selectedIcon = R.drawable.ic_people_selected,
-        unselectedIcon = R.drawable.ic_people_unselected,
-        bottomStringRes = R.string.people
-)
+        ),
+        MainDestination(
+                route = TvDestination.route,
+                selectedIcon = R.drawable.ic_tv_selected,
+                unselectedIcon = R.drawable.ic_tv_unselected,
+                bottomStringRes = R.string.tv
+        ),
+        MainDestination(
+                route = PeoplesDestination.route,
+                selectedIcon = R.drawable.ic_people_selected,
+                unselectedIcon = R.drawable.ic_people_unselected,
+                bottomStringRes = R.string.people
+        )
 )
 
 
