@@ -1,7 +1,6 @@
 package com.ahmadshubita.moviesapp.data.paging
 
 import com.ahmadshubita.moviesapp.data.models.Movie
-import com.ahmadshubita.moviesapp.data.models.People
 import com.ahmadshubita.moviesapp.data.remote.core.MainServices
 import com.ahmadshubita.moviesapp.data.remote.utils.wrapApiCall
 import javax.inject.Inject
@@ -19,7 +18,7 @@ class AllItemsPagingSource @Inject constructor(
                         page = page
                 )
             }else {
-                mainServices.getNowPlayingMovies(
+                mainServices.getUpcomingMovies(
                         language = language,
                         page = page
                 )
@@ -35,7 +34,7 @@ class AllItemsPagingSource @Inject constructor(
                         page = page
                 )
             }else {
-                mainServices.getNowPlayingMovies(
+                mainServices.getUpcomingMovies(
                         language = language,
                         page = page
                 )

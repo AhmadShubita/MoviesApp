@@ -142,7 +142,7 @@ fun MoviesContent(
                             verticalAlignment = Alignment.CenterVertically,
                     ) {
                         CategoryTitle(
-                                title = "Now",
+                                title = "Upcoming",
                                 MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
