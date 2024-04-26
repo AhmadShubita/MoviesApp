@@ -36,19 +36,15 @@ The project is structured using Clean Architecture, separating concerns into lay
 
 <table>
   <tr>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/All%20Movies.png" alt="image1"></td>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Details%20Screen.png" alt="image2"></td>
-    <td><img src="https://github.com/Abdallahx3x/NewsHive/assets/83548062/3a05e3e8-0523-4fed-9375-0fdf59bd6a21" alt="image3"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Home%20Page.png" alt="image1"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Home2%20Page.png" alt="image2"></td>  </tr>
+  <tr>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Tv%20Page.png" alt="image4"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/People%20Screen.png" alt="image5"></td>
   </tr>
   <tr>
-    <td><img src="https://github.com/Abdallahx3x/NewsHive/assets/83548062/07018609-90d8-4f1f-802b-82268e2e23cf" alt="image4"></td>
-    <td><img src="https://github.com/Abdallahx3x/NewsHive/assets/83548062/037541ef-c13f-458b-b6f9-a7928b0b8bd1" alt="image5"></td>
-    <td><img src="https://github.com/Abdallahx3x/NewsHive/assets/83548062/feb5c0fe-73bc-45b7-9731-9e7904b3aa57" alt="image6"></td>
-  </tr>
-  <tr>
-    <td><img src="https://github.com/Abdallahx3x/NewsHive/assets/83548062/101d3789-6736-465c-8e94-db469cf06e3d" alt="image7"></td>
-    <td><img src="https://github.com/Abdallahx3x/NewsHive/assets/83548062/1a24dd6f-90f0-4386-842a-df9fa144a710" alt="image8"></td>
-    <td><img src="https://github.com/Abdallahx3x/NewsHive/assets/83548062/d2e70ef5-4bd1-45f6-8f50-dc4a963601b7" alt="image9"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Details%20Screen.png" alt="image7"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/All%20Movies.png" alt="image8"></td>
   </tr>
 </table>
 
