@@ -12,6 +12,22 @@ The project is structured using Clean Architecture, separating concerns into lay
 
 - **Presentation:** Consists of the UI and ViewModel module.
 
+- ## Screenshots and Video
+
+<table>
+  <tr>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Home%20Page.png" alt="image1"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Home2%20Page.png" alt="image2"></td>  </tr>
+  <tr>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Tv%20Page.png" alt="image4"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/People%20Screen.png" alt="image5"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Details%20Screen.png" alt="image7"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/All%20Movies.png" alt="image8"></td>
+  </tr>
+</table>
+
 ## Features
 
 ### Movies Screen
@@ -31,22 +47,6 @@ The project is structured using Clean Architecture, separating concerns into lay
 ### Details
 
 ### View All Screen
-
-## Screenshots and Video
-
-<table>
-  <tr>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Home%20Page.png" alt="image1"></td>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Home2%20Page.png" alt="image2"></td>  </tr>
-  <tr>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Tv%20Page.png" alt="image4"></td>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/People%20Screen.png" alt="image5"></td>
-  </tr>
-  <tr>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Details%20Screen.png" alt="image7"></td>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/All%20Movies.png" alt="image8"></td>
-  </tr>
-</table>
 
 ## Technologies Used
 
