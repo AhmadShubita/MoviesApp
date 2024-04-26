@@ -32,13 +32,13 @@ The project is structured using Clean Architecture, separating concerns into lay
 
 - ### Movies Screen
 
-- #### Top Rated Movies Section
+- - #### Top Rated Movies Section
 
--   #### Upcoming Movies Section
+- - #### Upcoming Movies Section
 
--   #### Popular Movies Section
+- - #### Popular Movies Section
 
--   #### Dark/Light Mode Switcher
+- - #### Dark/Light Mode Switcher
 
 - ### Tv Series Screen
 
