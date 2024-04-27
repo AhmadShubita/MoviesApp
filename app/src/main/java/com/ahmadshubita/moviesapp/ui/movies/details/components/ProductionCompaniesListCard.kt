@@ -1,4 +1,4 @@
-package com.ahmadshubita.moviesapp.ui.movies.details
+package com.ahmadshubita.moviesapp.ui.movies.details.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -53,8 +53,7 @@ fun ProductionCompaniesListCard(
                     path,
                     contentDescription = null,
                     contentScale = ContentScale.Inside,
-                    modifier = Modifier
-                        .fillMaxSize()
+                    modifier = Modifier.fillMaxSize()
                 )
                 Box(
                     modifier = Modifier
@@ -105,8 +104,7 @@ fun CardPreview() {
         ProductionCompaniesListCard(title = "Marvel",
             year = "2022",
             path = "https://egyptianstreets.com/wp-content/uploads/2022/10/GettyImages-1243921482.v1.jpg",
-            onClick = {}
-        )
+            onClick = {})
     }
 }
 

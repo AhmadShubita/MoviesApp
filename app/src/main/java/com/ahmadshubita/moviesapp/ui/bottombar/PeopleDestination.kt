@@ -16,7 +16,7 @@ object PeoplesDestination : MainNavDestination {
 
 }
 
-fun NavGraphBuilder.peopleGraph(navController: NavController, isBottomNavVisible: MutableState<Boolean>, navigateToDetails: () -> Unit){
+fun NavGraphBuilder.peopleGraph(navController: NavController, isBottomNavVisible: MutableState<Boolean>){
     composable(route = PeoplesDestination.route){
         LaunchedEffect(key1 = null ){
             isBottomNavVisible.value = true

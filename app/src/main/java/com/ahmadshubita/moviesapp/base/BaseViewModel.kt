@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.ahmadshubita.moviesapp.data.remote.utils.NetworkException
 import com.ahmadshubita.moviesapp.data.remote.utils.MoviesAppException
+import com.ahmadshubita.moviesapp.data.remote.utils.NetworkException
 import com.ahmadshubita.moviesapp.data.remote.utils.NullDataException
 import com.ahmadshubita.moviesapp.data.remote.utils.RateLimitExceededException
 import com.ahmadshubita.moviesapp.data.remote.utils.UnAuthorizedException
@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 
@@ -30,10 +29,10 @@ abstract class BaseViewModel<STATE, UiEffect>(initState: STATE) : ViewModel() {
     val uiEffect = uiMutableEffect.asSharedFlow()
 
     fun <T> execute(
-            call: suspend () -> T,
-            onSuccess: (T) -> Unit,
-            onError: (Throwable) -> Unit,
-            dispatcher: CoroutineDispatcher = Dispatchers.IO
+        call: suspend () -> T,
+        onSuccess: (T) -> Unit,
+        onError: (Throwable) -> Unit,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
         viewModelScope.launch(dispatcher) {
             try {
@@ -53,12 +52,12 @@ abstract class BaseViewModel<STATE, UiEffect>(initState: STATE) : ViewModel() {
     }
 
     suspend fun <T1, T2, T3> executeConcurrently(
-            call1: suspend () -> T1,
-            call2: suspend () -> T2,
-            call3: suspend () -> T3,
-            onSuccess: (T1, T2, T3) -> Unit,
-            onError: (Throwable) -> Unit,
-            dispatcher: CoroutineDispatcher = Dispatchers.IO
+        call1: suspend () -> T1,
+        call2: suspend () -> T2,
+        call3: suspend () -> T3,
+        onSuccess: (T1, T2, T3) -> Unit,
+        onError: (Throwable) -> Unit,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
         supervisorScope {
             try {
@@ -78,10 +77,10 @@ abstract class BaseViewModel<STATE, UiEffect>(initState: STATE) : ViewModel() {
     }
 
     fun <T : Any> executePaging(
-            call: suspend () -> Flow<PagingData<T>>,
-            onSuccess: suspend (PagingData<T>) -> Unit,
-            onError: (Throwable) -> Unit,
-            dispatcher: CoroutineDispatcher = Dispatchers.IO
+        call: suspend () -> Flow<PagingData<T>>,
+        onSuccess: suspend (PagingData<T>) -> Unit,
+        onError: (Throwable) -> Unit,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
         viewModelScope.launch(dispatcher) {
             try {
@@ -101,17 +100,6 @@ abstract class BaseViewModel<STATE, UiEffect>(initState: STATE) : ViewModel() {
                 onError(e)
             }
 
-        }
-    }
-
-    protected fun <T> collectFlow(
-            flow: Flow<T>,
-            updateState: STATE.(T) -> STATE
-    ) {
-        viewModelScope.launch {
-            flow.collect { value ->
-                uiMutableState.update { it.updateState(value) }
-            }
         }
     }
 

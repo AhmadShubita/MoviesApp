@@ -26,6 +26,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.ahmadshubita.moviesapp.R
+import com.ahmadshubita.moviesapp.ui.movies.details.components.ProductionCompaniesListCard
+import com.ahmadshubita.moviesapp.ui.movies.details.components.RatingLayout
 import com.ahmadshubita.moviesapp.ui.movies.details.viewmodel.DetailsScreenState
 import com.ahmadshubita.moviesapp.ui.movies.details.viewmodel.DetailsUiEffect
 import com.ahmadshubita.moviesapp.ui.movies.details.viewmodel.DetailsViewModel
@@ -38,7 +40,7 @@ import com.ahmadshubita.moviesapp.ui.util.SnackBarStatus
 
 @Composable
 fun DetailsScreen(
-        navController: NavController, viewModel: DetailsViewModel = hiltViewModel()
+    navController: NavController, viewModel: DetailsViewModel = hiltViewModel()
 ) {
     val detailsScreenState by viewModel.uiState.collectAsState()
     HandleUiEffect(effect = viewModel.uiEffect) {
@@ -72,242 +74,253 @@ fun DetailsContent(state: DetailsScreenState, viewModel: DetailsViewModel) {
     val notImplemented = stringResource(id = R.string.this_feature_not_implemented)
 
     Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            snackbarHost = { snackBarBuilder.SnackBarHost() },
+        modifier = Modifier.fillMaxSize(),
+        snackbarHost = { snackBarBuilder.SnackBarHost() },
     ) {
         Box(
-                modifier = Modifier
-                        .fillMaxHeight()
-                        .background(colorScheme.surface)
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(colorScheme.surface)
         ) {
             Column {
                 Box(modifier = Modifier.height(400.dp)) {
                     AsyncImage(
-                            state.detailsItem.posterImageUrl,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
+                        state.detailsItem.posterImageUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
                     )
                     Box(
-                            modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(
-                                            Brush.verticalGradient(
-                                                    colors = listOf(
-                                                            customColorsPalette.transparent,
-                                                            customColorsPalette.transparent.copy(alpha = dimens.floatValues.float0_8)
-                                                    ), startY = dimens.floatValues.float200
-                                            )
-                                    )
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        customColorsPalette.transparent,
+                                        customColorsPalette.transparent.copy(alpha = dimens.floatValues.float0_8)
+                                    ), startY = dimens.floatValues.float200
+                                )
+                            )
                     )
                     Column(
-                            modifier = Modifier
-                                    .align(Alignment.BottomStart)
-                                    .wrapContentHeight()
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .wrapContentHeight()
                     ) {
                         Text(
-                                modifier = Modifier.padding(horizontal = dimens.space20),
-                                text = state.detailsItem.title ?: "",
-                                color = colorScheme.onTertiary,
-                                style = fontStyle.titleLarge,
-                                maxLines = 5,
-                                overflow = TextOverflow.Ellipsis
+                            modifier = Modifier.padding(horizontal = dimens.space20),
+                            text = state.detailsItem.title ?: "",
+                            color = colorScheme.onTertiary,
+                            style = fontStyle.titleLarge,
+                            maxLines = 5,
+                            overflow = TextOverflow.Ellipsis
                         )
 
                         Row(
-                                modifier = Modifier
-                                        .fillMaxWidth()
-                                        .wrapContentHeight()
-                                        .padding(
-                                                start = dimens.space20,
-                                                end = dimens.space20,
-                                                bottom = dimens.space20
-                                        ), verticalAlignment = Alignment.Bottom
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(
+                                    start = dimens.space20,
+                                    end = dimens.space20,
+                                    bottom = dimens.space20
+                                ), verticalAlignment = Alignment.Bottom
                         ) {
                             Column(
-                                    Modifier.weight(1f)
+                                Modifier.weight(1f)
                             ) {
                                 Text(
-                                        modifier = Modifier,
-                                        text = "${state.detailsItem.voteCount} People Rating",
-                                        color = colorScheme.surfaceVariant,
-                                        style = fontStyle.titleMedium,
-                                        maxLines = 5,
-                                        overflow = TextOverflow.Ellipsis
+                                    modifier = Modifier,
+                                    text = "${state.detailsItem.voteCount} People Rating",
+                                    color = colorScheme.surfaceVariant,
+                                    style = fontStyle.titleMedium,
+                                    maxLines = 5,
+                                    overflow = TextOverflow.Ellipsis
                                 )
 
                                 Row(
-                                        modifier = Modifier.padding(top = 12.dp),
-                                        verticalAlignment = Alignment.Bottom
+                                    modifier = Modifier.padding(top = 12.dp),
+                                    verticalAlignment = Alignment.Bottom
                                 ) {
                                     Text(
-                                            text = state.detailsItem.rating,
-                                            color = colorScheme.secondary,
-                                            style = fontStyle.titleLarge,
-                                            maxLines = 5,
-                                            overflow = TextOverflow.Ellipsis
+                                        text = state.detailsItem.rating,
+                                        color = colorScheme.secondary,
+                                        style = fontStyle.titleLarge,
+                                        maxLines = 5,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                     RatingLayout(
-                                            modifier = Modifier.padding(start = 8.dp, bottom = 2.dp),
-                                            rating = state.detailsItem.voteAverage ?: 0.0
+                                        modifier = Modifier.padding(start = 8.dp, bottom = 2.dp),
+                                        rating = state.detailsItem.voteAverage ?: 0.0
                                     )
                                 }
                             }
-                            Card(modifier = Modifier
+                            Card(
+                                modifier = Modifier
                                     .size(dimens.space64)
                                     .weight(0.24f)
                                     .padding(top = dimens.space8, end = dimens.space8)
                                     .clickable {
                                         snackBarBuilder.showSnackBar(
-                                                coroutineScope = coroutineScope,
-                                                status = SnackBarStatus.DEFAULT,
-                                                message = notImplemented,
-                                                throwable = null,
+                                            coroutineScope = coroutineScope,
+                                            status = SnackBarStatus.DEFAULT,
+                                            message = notImplemented,
+                                            throwable = null,
                                         )
                                     },
-                                    shape = RoundedCornerShape(dimens.space56),
-                                    elevation = CardDefaults.cardElevation(dimens.space16),
-                                    colors = CardDefaults.cardColors(containerColor = colorScheme.secondary)
+                                shape = RoundedCornerShape(dimens.space56),
+                                elevation = CardDefaults.cardElevation(dimens.space16),
+                                colors = CardDefaults.cardColors(containerColor = colorScheme.secondary)
                             ) {
-                                Box(modifier = Modifier
+                                Box(
+                                    modifier = Modifier
                                         .fillMaxSize()
-                                        .background(brush = Brush.horizontalGradient(
+                                        .background(
+                                            brush = Brush.horizontalGradient(
                                                 colors = listOf(
-                                                        colorScheme.onPrimaryContainer,
-                                                        colorScheme.primaryContainer
+                                                    colorScheme.onPrimaryContainer,
+                                                    colorScheme.primaryContainer
                                                 )
-                                        )
+                                            )
                                         ), contentAlignment = Alignment.Center
                                 ) {
-                                    Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_play),
-                                            modifier = Modifier
-                                                    .size(18.dp)
-                                                    .padding(start = 2.dp)
-                                                    .align(
-                                                            Alignment.Center
-                                                    ),
-                                            tint = Color.White,
-                                            contentDescription = ""
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_play),
+                                        modifier = Modifier
+                                            .size(18.dp)
+                                            .padding(start = 2.dp)
+                                            .align(
+                                                Alignment.Center
+                                            ),
+                                        tint = Color.White,
+                                        contentDescription = ""
                                     )
                                 }
                             }
                         }
-                        Text(modifier = Modifier
+                        Text(
+                            modifier = Modifier
                                 .padding(bottom = dimens.space40)
                                 .padding(horizontal = dimens.space20),
-                                text = state.detailsItem.overview ?: "",
-                                color = colorScheme.onTertiary,
-                                style = fontStyle.titleLarge,
-                                maxLines = 5,
-                                overflow = TextOverflow.Ellipsis
+                            text = state.detailsItem.overview ?: "",
+                            color = colorScheme.onTertiary,
+                            style = fontStyle.titleLarge,
+                            maxLines = 5,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
 
-                    Row(modifier = Modifier
+                    Row(
+                        modifier = Modifier
                             .fillMaxWidth()
                             .padding(dimens.space10)
                     ) {
 
                         IconButton(onClick = { viewModel.onClickBackButton() }) {
                             Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
-                                    contentDescription = "",
-                                    tint = MaterialTheme.colorScheme.onTertiary
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
+                                contentDescription = "",
+                                tint = MaterialTheme.colorScheme.onTertiary
                             )
                         }
 
                         Spacer(modifier = Modifier.weight(1f))
                         IconButton(onClick = {
                             snackBarBuilder.showSnackBar(
-                                    coroutineScope = coroutineScope,
-                                    status = SnackBarStatus.DEFAULT,
-                                    message = notImplemented,
-                                    throwable = null,
+                                coroutineScope = coroutineScope,
+                                status = SnackBarStatus.DEFAULT,
+                                message = notImplemented,
+                                throwable = null,
                             )
                         }) {
                             Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
-                                    contentDescription = "",
-                                    tint = colorScheme.onTertiary
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
+                                contentDescription = "",
+                                tint = colorScheme.onTertiary
                             )
                         }
                     }
                 }
                 Text(
-                        text = "Production Companies",
-                        modifier = Modifier.padding(start = dimens.space16, top = dimens.space24),
-                        style = fontStyle.titleMedium,
-                        color = colorScheme.onBackground
+                    text = "Production Companies",
+                    modifier = Modifier.padding(start = dimens.space16, top = dimens.space24),
+                    style = fontStyle.titleMedium,
+                    color = colorScheme.onBackground
                 )
-                LazyHorizontalGrid(modifier = Modifier
+                LazyHorizontalGrid(
+                    modifier = Modifier
                         .fillMaxWidth()
                         .height(220.dp)
                         .padding(start = dimens.space16, top = dimens.space20),
-                        rows = GridCells.Fixed(1)
+                    rows = GridCells.Fixed(1)
                 ) {
                     state.detailsItem.productionCompanies?.size?.let {
                         items(it) { item ->
                             ProductionCompaniesListCard(state.detailsItem.productionCompanies[item].name,
-                                    "",
-                                    state.detailsItem.productionCompanies[item].logoUrl,
-                                    onClick = {
-                                        snackBarBuilder.showSnackBar(
-                                                coroutineScope = coroutineScope,
-                                                status = SnackBarStatus.DEFAULT,
-                                                message = notImplemented,
-                                                throwable = null,
-                                        )
-                                    })
+                                "",
+                                state.detailsItem.productionCompanies[item].logoUrl,
+                                onClick = {
+                                    snackBarBuilder.showSnackBar(
+                                        coroutineScope = coroutineScope,
+                                        status = SnackBarStatus.DEFAULT,
+                                        message = notImplemented,
+                                        throwable = null,
+                                    )
+                                })
                         }
                     }
                 }
 
-                Row(modifier = Modifier
+                Row(
+                    modifier = Modifier
                         .padding(top = dimens.space26)
                         .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(modifier = Modifier
+                    Image(
+                        modifier = Modifier
                             .size(70.dp)
                             .clickable {
                                 snackBarBuilder.showSnackBar(
-                                        coroutineScope = coroutineScope,
-                                        status = SnackBarStatus.DEFAULT,
-                                        message = notImplemented,
-                                        throwable = null,
+                                    coroutineScope = coroutineScope,
+                                    status = SnackBarStatus.DEFAULT,
+                                    message = notImplemented,
+                                    throwable = null,
                                 )
                             },
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_like_filled),
-                            contentDescription = ""
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_like_filled),
+                        contentDescription = ""
                     )
                     Spacer(modifier = Modifier.size(20.dp))
-                    Image(modifier = Modifier
+                    Image(
+                        modifier = Modifier
                             .size(70.dp)
                             .clickable {
                                 snackBarBuilder.showSnackBar(
-                                        coroutineScope = coroutineScope,
-                                        status = SnackBarStatus.DEFAULT,
-                                        message = notImplemented,
-                                        throwable = null,
+                                    coroutineScope = coroutineScope,
+                                    status = SnackBarStatus.DEFAULT,
+                                    message = notImplemented,
+                                    throwable = null,
                                 )
                             },
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_circle_filled),
-                            contentDescription = ""
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_circle_filled),
+                        contentDescription = ""
                     )
                     Spacer(modifier = Modifier.size(20.dp))
-                    Image(modifier = Modifier
+                    Image(
+                        modifier = Modifier
                             .size(70.dp)
                             .clickable {
                                 snackBarBuilder.showSnackBar(
-                                        coroutineScope = coroutineScope,
-                                        status = SnackBarStatus.DEFAULT,
-                                        message = notImplemented,
-                                        throwable = null,
+                                    coroutineScope = coroutineScope,
+                                    status = SnackBarStatus.DEFAULT,
+                                    message = notImplemented,
+                                    throwable = null,
                                 )
                             },
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_comment_filled),
-                            contentDescription = ""
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_comment_filled),
+                        contentDescription = ""
                     )
                 }
             }

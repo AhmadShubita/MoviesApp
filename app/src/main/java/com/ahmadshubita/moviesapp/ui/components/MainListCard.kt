@@ -30,7 +30,6 @@ import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 import com.ahmadshubita.moviesapp.ui.theme.customColors
 import com.ahmadshubita.moviesapp.ui.theme.dimens
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainListCard(
     title: String,
@@ -45,9 +44,11 @@ fun MainListCard(
     val fontStyle = MaterialTheme.typography
     val dimens = dimens
 
-    Box(modifier = Modifier
-        .wrapContentSize()
-        .padding(bottom = 16.dp, end = 16.dp)) {
+    Box(
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(bottom = 16.dp, end = 16.dp)
+    ) {
         val modifier = if (isWrapContent) {
             Modifier
                 .fillMaxWidth()
@@ -64,8 +65,7 @@ fun MainListCard(
                     path,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                            .fillMaxSize()
+                    modifier = Modifier.fillMaxSize()
                 )
                 Box(
                     modifier = Modifier
@@ -79,7 +79,7 @@ fun MainListCard(
                             )
                         )
                 )
-                if(!isPeople) {
+                if (!isPeople) {
                     Card(
                         modifier = Modifier
                             .size(35.dp)
@@ -102,7 +102,9 @@ fun MainListCard(
                                 ), contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                modifier = Modifier.align(Alignment.Center).padding(top = 2.dp),
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .padding(top = 2.dp),
                                 text = rating.format("0.0"),
                                 color = MaterialTheme.colorScheme.onTertiary,
                                 style = fontStyle.titleSmall,
@@ -147,12 +149,14 @@ fun MainListCard(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 fun CardPreview() {
     MoviesAppTheme {
-        MainListCard(title = "Marvel",
+        MainListCard(
+            title = "Marvel",
             year = "2022",
             rating = "9.3",
-            path  ="https://egyptianstreets.com/wp-content/uploads/2022/10/GettyImages-1243921482.v1.jpg",
+            path = "https://egyptianstreets.com/wp-content/uploads/2022/10/GettyImages-1243921482.v1.jpg",
             onClick = {},
-            isWrapContent = false)
+            isWrapContent = false
+        )
     }
 }
 

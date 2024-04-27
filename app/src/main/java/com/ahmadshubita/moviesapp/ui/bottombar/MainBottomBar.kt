@@ -27,65 +27,62 @@ import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
 fun MainBottomBar(
-        onNavigateToDestination: (MainDestination) -> Unit, currentDestination: NavDestination?
+    onNavigateToDestination: (MainDestination) -> Unit, currentDestination: NavDestination?
 ) {
     val colorScheme = MaterialTheme.colorScheme
     NavigationBar(
-            containerColor = colorScheme.surface,
-            tonalElevation = 0.dp,
+        containerColor = colorScheme.surface,
+        tonalElevation = 0.dp,
     ) {
 
         bottomBarItems.forEach { destination ->
             val selectedItem =
-                    currentDestination?.hierarchy?.any { it.route == destination.route } == true
-            NavigationBarItem(
-                    selected = selectedItem,
-                    onClick = { onNavigateToDestination(destination) },
-                    icon = {
-                        Icon(
-                                if (selectedItem) {
-                                    painterResource(destination.selectedIcon)
-                                } else {
-                                    painterResource(destination.unselectedIcon)
-                                }, contentDescription = null
-                        )
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                            selectedTextColor = colorScheme.onPrimaryContainer,
-                            unselectedTextColor = colorScheme.onSurfaceVariant
-                    ),
-                    label = { Text(stringResource(destination.bottomStringRes)) })
+                currentDestination?.hierarchy?.any { it.route == destination.route } == true
+            NavigationBarItem(selected = selectedItem,
+                onClick = { onNavigateToDestination(destination) },
+                icon = {
+                    Icon(
+                        if (selectedItem) {
+                            painterResource(destination.selectedIcon)
+                        } else {
+                            painterResource(destination.unselectedIcon)
+                        }, contentDescription = null
+                    )
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedTextColor = colorScheme.onPrimaryContainer,
+                    unselectedTextColor = colorScheme.onSurfaceVariant
+                ),
+                label = { Text(stringResource(destination.bottomStringRes)) })
         }
     }
 }
 
 
 data class MainDestination(
-        val route: String,
-        @DrawableRes val selectedIcon: Int,
-        @DrawableRes val unselectedIcon: Int,
-        @StringRes val bottomStringRes: Int
+    val route: String,
+    @DrawableRes val selectedIcon: Int,
+    @DrawableRes val unselectedIcon: Int,
+    @StringRes val bottomStringRes: Int
 )
 
 val bottomBarItems = listOf(
-        MainDestination(
-                route = MoviesDestination.route,
-                selectedIcon = R.drawable.ic_movies_seleced,
-                unselectedIcon = R.drawable.ic_movies_unselected,
-                bottomStringRes = R.string.movies
-        ),
-        MainDestination(
-                route = TvDestination.route,
-                selectedIcon = R.drawable.ic_tv_selected,
-                unselectedIcon = R.drawable.ic_tv_unselected,
-                bottomStringRes = R.string.tv
-        ),
-        MainDestination(
-                route = PeoplesDestination.route,
-                selectedIcon = R.drawable.ic_people_selected,
-                unselectedIcon = R.drawable.ic_people_unselected,
-                bottomStringRes = R.string.people
-        )
+    MainDestination(
+        route = MoviesDestination.route,
+        selectedIcon = R.drawable.ic_movies_seleced,
+        unselectedIcon = R.drawable.ic_movies_unselected,
+        bottomStringRes = R.string.movies
+    ), MainDestination(
+        route = TvDestination.route,
+        selectedIcon = R.drawable.ic_tv_selected,
+        unselectedIcon = R.drawable.ic_tv_unselected,
+        bottomStringRes = R.string.tv
+    ), MainDestination(
+        route = PeoplesDestination.route,
+        selectedIcon = R.drawable.ic_people_selected,
+        unselectedIcon = R.drawable.ic_people_unselected,
+        bottomStringRes = R.string.people
+    )
 )
 
 

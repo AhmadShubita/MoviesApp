@@ -1,4 +1,4 @@
-package com.ahmadshubita.moviesapp.ui.movies.details
+package com.ahmadshubita.moviesapp.ui.movies.details.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
@@ -14,7 +14,7 @@ import com.ahmadshubita.moviesapp.R
 import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
-fun RatingLayout(modifier: Modifier,rating: Double) {
+fun RatingLayout(modifier: Modifier, rating: Double) {
     val value = rating / 2
     Row(modifier = modifier) {
 

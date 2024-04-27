@@ -28,7 +28,6 @@ import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ahmadshubita.moviesapp.ui.theme.MoviesAppTheme
 
@@ -51,7 +50,7 @@ fun CustomSwitch(
             .size(width = 50.dp, height = 28.dp)
             .border(
                 width = 2.dp,
-                color = if (switchOn) MaterialTheme.colorScheme.primary else  MaterialTheme.colorScheme.onBackground,
+                color = if (switchOn) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                 shape = RoundedCornerShape(percent = 50)
             )
             .clickable(
@@ -76,7 +75,7 @@ fun CustomSwitch(
                 modifier = Modifier
                     .size(size = 20.dp)
                     .background(
-                        color = if (switchOn) MaterialTheme.colorScheme.primary else  MaterialTheme.colorScheme.onBackground,
+                        color = if (switchOn) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                         shape = CircleShape
                     )
                     .padding(all = 4.dp),

@@ -24,25 +24,23 @@ class MainDataStore @Inject constructor(@ApplicationContext context: Context) {
     private val dataStore = context.dataStore
 
 
-    //dark mode prefs
     suspend fun setDarkThemePrefs(isDarkTheme: Boolean) {
         dataStore.edit { pref ->
             pref[DARK_MODE_KEY] = isDarkTheme
         }
     }
 
-    fun getDarkThemePrefs(): Flow<Boolean> = dataStore.data.distinctUntilChanged()
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
+    fun getDarkThemePrefs(): Flow<Boolean> =
+        dataStore.data.distinctUntilChanged().catch { exception ->
+                if (exception is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }.map { pref ->
+                val onboard = pref[DARK_MODE_KEY] ?: false
+                onboard
             }
-        }
-        .map { pref ->
-            val onboard = pref[DARK_MODE_KEY] ?: false
-            onboard
-        }
 
     companion object {
         val DARK_MODE_KEY = booleanPreferencesKey("DARK_MODE")

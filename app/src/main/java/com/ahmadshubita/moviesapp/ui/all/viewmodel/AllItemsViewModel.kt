@@ -15,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AllItemsViewModel @Inject constructor(
-        private val mainRepository: MainRepository,
-        savedStateHandle: SavedStateHandle
+    private val mainRepository: MainRepository, savedStateHandle: SavedStateHandle
 ) : BaseViewModel<AllItemsScreenState, AllItemsUiEffect>(AllItemsScreenState()) {
 
     private val allItemsScreenArgs = AllItemsScreenArgs(savedStateHandle)
@@ -27,45 +26,46 @@ class AllItemsViewModel @Inject constructor(
 
     private fun getMovies() {
         val isPopularItemsScreen = allItemsScreenArgs.isPopularItemsScreen
-        executePaging(
-                call = {
-                    if (isPopularItemsScreen) {
-                        mainRepository.getPopularMoviesPaging(LANGUAGE_TYPE, 1)
-                    } else {
-                        mainRepository.getNowPlayingMoviesPaging(LANGUAGE_TYPE, 1)
-                    }
-                },
-                onSuccess = { response ->
-                    onGetMovies(response)
-                },
-                onError = { onError() }
-        )
+        executePaging(call = {
+            if (isPopularItemsScreen) {
+                mainRepository.getPopularMoviesPaging(LANGUAGE_TYPE, 1)
+            } else {
+                mainRepository.getNowPlayingMoviesPaging(LANGUAGE_TYPE, 1)
+            }
+        }, onSuccess = { response ->
+            onGetMovies(response)
+        }, onError = { onError() })
     }
 
     private fun onGetMovies(peopleList: PagingData<Movie>) {
         val filteredList = peopleList.filter { !it.posterPath.isNullOrBlank() }
         uiMutableState.update {
             it.copy(
-                    isLoadingState = mutableStateOf(false),
-                    isErrorState = mutableStateOf(false),
-                    moviesItems = flowOf(filteredList),
+                isLoadingState = mutableStateOf(false),
+                isErrorState = mutableStateOf(false),
+                moviesItems = flowOf(filteredList),
             )
         }
     }
 
     private fun onError() {
-        uiMutableState.update { it.copy(isLoadingState = mutableStateOf(false), isErrorState = mutableStateOf(true)) }
+        uiMutableState.update {
+            it.copy(
+                isLoadingState = mutableStateOf(false),
+                isErrorState = mutableStateOf(true)
+            )
+        }
     }
 
     fun onRefreshData() {
         getMovies()
     }
 
-    fun onClickBackButton(){
+    fun onClickBackButton() {
         triggerUiEffect(AllItemsUiEffect.NavigateBack)
     }
 
-    fun onMovieItemClick(detailsType: DetailsType, id: Int){
+    fun onMovieItemClick(detailsType: DetailsType, id: Int) {
         triggerUiEffect(AllItemsUiEffect.NavigateToDetails(detailsType, id.toString()))
     }
 

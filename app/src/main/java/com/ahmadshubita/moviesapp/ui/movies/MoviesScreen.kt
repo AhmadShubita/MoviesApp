@@ -49,7 +49,7 @@ import com.ahmadshubita.moviesapp.ui.util.SnackBarStatus
 
 @Composable
 fun MoviesScreen(
-        navController: NavController, viewModel: MoviesViewModel = hiltViewModel()
+    navController: NavController, viewModel: MoviesViewModel = hiltViewModel()
 ) {
 
     val state by viewModel.uiState.collectAsState()
@@ -57,14 +57,13 @@ fun MoviesScreen(
         when (it) {
             is MoviesUiEffect.NavigateToAllItems -> {
                 navController.navigateAllItemsScreen(
-                        it.isPopular
+                    it.isPopular
                 )
             }
 
             is MoviesUiEffect.NavigateToDetails -> {
                 navController.navigateToDetailsScreen(
-                        it.detailsType,
-                        it.id
+                    it.detailsType, it.id
                 )
             }
         }
@@ -75,7 +74,7 @@ fun MoviesScreen(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MoviesContent(
-        moviesScreenState: MoviesScreenState, viewModel: MoviesViewModel
+    moviesScreenState: MoviesScreenState, viewModel: MoviesViewModel
 ) {
 
     val coroutineScope = rememberCoroutineScope()
@@ -90,139 +89,146 @@ fun MoviesContent(
 
     val isDarkTheme = viewModel.isDarkTheme.value
 
-    Scaffold(snackbarHost = { snackBarBuilder.SnackBarHost() }, containerColor = MaterialTheme.colorScheme.surface) {
+    Scaffold(
+        snackbarHost = { snackBarBuilder.SnackBarHost() },
+        containerColor = MaterialTheme.colorScheme.surface
+    ) {
         if (!moviesScreenState.isErrorState.value && !moviesScreenState.isLoadingState.value) {
             Column(
-                    modifier = Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.surface)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
 
                 Row(
-                        modifier = Modifier
-                                .padding(16.dp)
-                                .background(MaterialTheme.colorScheme.surface),
-                        verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .background(MaterialTheme.colorScheme.surface),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    CategoryTitle(title = stringResource(id = R.string.movies), MaterialTheme.typography.titleLarge)
+                    CategoryTitle(
+                        title = stringResource(id = R.string.movies),
+                        MaterialTheme.typography.titleLarge
+                    )
                     Spacer(modifier = Modifier.weight(1f))
                     CustomSwitch(checked = isDarkTheme, onCheckedChange = { darkTheme ->
                         viewModel.switchTheme(darkTheme)
                     })
                 }
                 Column(
-                        modifier = Modifier
-                                .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.background)
-                                .verticalScroll(rememberScrollState())
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                        .verticalScroll(rememberScrollState())
                 ) {
                     LazyHorizontalGrid(
-                            modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(170.dp)
-                                    .padding(top = 10.dp, start = 16.dp),
-                            rows = GridCells.Fixed(1),
-                            contentPadding = PaddingValues(0.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(170.dp)
+                            .padding(top = 10.dp, start = 16.dp),
+                        rows = GridCells.Fixed(1),
+                        contentPadding = PaddingValues(0.dp)
                     ) {
                         items(moviesScreenState.topRatedMoviesItems.size) { item ->
-                            MoviesMainCard(moviesScreenState.topRatedMoviesItems[item].posterImageUrl
+                            MoviesMainCard(
+                                moviesScreenState.topRatedMoviesItems[item].posterImageUrl
                             ) {
                                 viewModel.onMovieItemClick(
-                                        DetailsType.MOVIE_DETAILS,
-                                        moviesScreenState.topRatedMoviesItems[item].id
+                                    DetailsType.MOVIE_DETAILS,
+                                    moviesScreenState.topRatedMoviesItems[item].id
                                 )
                             }
                         }
                     }
                     Row(
-                            modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         CategoryTitle(
-                                title = stringResource(id = R.string.upcoming),
-                                MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            title = stringResource(id = R.string.upcoming),
+                            MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         TextButton(modifier = Modifier.wrapContentWidth(),
-                                onClick = { viewModel.navigateAllItemsScreen(false) }) {
+                            onClick = { viewModel.navigateAllItemsScreen(false) }) {
                             Text(
-                                    text = stringResource(id = R.string.view_all),
-                                    textAlign = TextAlign.Start,
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = MaterialTheme.colorScheme.primary
+                                text = stringResource(id = R.string.view_all),
+                                textAlign = TextAlign.Start,
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
                     LazyHorizontalGrid(
-                            modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(240.dp)
-                                    .padding(start = dimens.space16), rows = GridCells.Fixed(1)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(240.dp)
+                            .padding(start = dimens.space16), rows = GridCells.Fixed(1)
                     ) {
                         items(moviesScreenState.nowMoviesItems.size) { item ->
                             MainListCard(
-                                    moviesScreenState.nowMoviesItems[item].title ?: "",
-                                    moviesScreenState.nowMoviesItems[item].releaseYear,
-                                    moviesScreenState.nowMoviesItems[item].rating,
-                                    moviesScreenState.nowMoviesItems[item].posterImageUrl,
-                                    onClick = {
-                                        viewModel.onMovieItemClick(
-                                                DetailsType.MOVIE_DETAILS,
-                                                moviesScreenState.nowMoviesItems[item].id
-                                        )
-                                    },
-                                    isWrapContent = false
+                                moviesScreenState.nowMoviesItems[item].title ?: "",
+                                moviesScreenState.nowMoviesItems[item].releaseYear,
+                                moviesScreenState.nowMoviesItems[item].rating,
+                                moviesScreenState.nowMoviesItems[item].posterImageUrl,
+                                onClick = {
+                                    viewModel.onMovieItemClick(
+                                        DetailsType.MOVIE_DETAILS,
+                                        moviesScreenState.nowMoviesItems[item].id
+                                    )
+                                },
+                                isWrapContent = false
                             )
                         }
                     }
                     Row(
-                            modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = dimens.space16),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = dimens.space16),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         CategoryTitle(
-                                title = stringResource(id = R.string.popular),
-                                MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            title = stringResource(id = R.string.popular),
+                            MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         TextButton(modifier = Modifier.wrapContentWidth(),
-                                onClick = { viewModel.navigateAllItemsScreen(true) }) {
+                            onClick = { viewModel.navigateAllItemsScreen(true) }) {
                             Text(
-                                    text = stringResource(id = R.string.view_all),
-                                    textAlign = TextAlign.Start,
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = MaterialTheme.colorScheme.primary
+                                text = stringResource(id = R.string.view_all),
+                                textAlign = TextAlign.Start,
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
                     LazyHorizontalGrid(
-                            modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(480.dp)
-                                    .padding(start = dimens.space10),
-                            rows = GridCells.Fixed(2),
-                            contentPadding = PaddingValues(dimens.space6)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(480.dp)
+                            .padding(start = dimens.space10),
+                        rows = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(dimens.space6)
                     ) {
                         items(moviesScreenState.popularMoviesItems.size) { item ->
                             MainListCard(
-                                    moviesScreenState.popularMoviesItems[item].title ?: "",
-                                    moviesScreenState.popularMoviesItems[item].releaseYear,
-                                    moviesScreenState.popularMoviesItems[item].rating,
-                                    moviesScreenState.popularMoviesItems[item].posterImageUrl,
-                                    onClick = {
-                                        viewModel.onMovieItemClick(
-                                                DetailsType.MOVIE_DETAILS,
-                                                moviesScreenState.popularMoviesItems[item].id
-                                        )
-                                    },
-                                    isWrapContent = false
+                                moviesScreenState.popularMoviesItems[item].title ?: "",
+                                moviesScreenState.popularMoviesItems[item].releaseYear,
+                                moviesScreenState.popularMoviesItems[item].rating,
+                                moviesScreenState.popularMoviesItems[item].posterImageUrl,
+                                onClick = {
+                                    viewModel.onMovieItemClick(
+                                        DetailsType.MOVIE_DETAILS,
+                                        moviesScreenState.popularMoviesItems[item].id
+                                    )
+                                },
+                                isWrapContent = false
                             )
                         }
                     }
@@ -231,15 +237,15 @@ fun MoviesContent(
         } else if (moviesScreenState.isLoadingState.value) {
             DefaultProgressBar()
         } else {
-            DefaultErrorLayout{
+            DefaultErrorLayout {
                 viewModel.onRefreshData()
             }
             snackBarBuilder.showSnackBar(
-                    coroutineScope = coroutineScope,
-                    status = SnackBarStatus.ERROR,
-                    message = stringResource(id = R.string.something_went_wrong),
-                    throwable = null,
-                    actionLabel = stringResource(id = R.string.retry)
+                coroutineScope = coroutineScope,
+                status = SnackBarStatus.ERROR,
+                message = stringResource(id = R.string.something_went_wrong),
+                throwable = null,
+                actionLabel = stringResource(id = R.string.retry)
             ) {
                 viewModel.onRefreshData()
             }
@@ -249,12 +255,12 @@ fun MoviesContent(
 
 @Composable
 fun CategoryTitle(
-        title: String,
-        textSize: androidx.compose.ui.text.TextStyle,
-        color: Color = MaterialTheme.colorScheme.onBackground
+    title: String,
+    textSize: androidx.compose.ui.text.TextStyle,
+    color: Color = MaterialTheme.colorScheme.onBackground
 ) {
     Text(
-            text = title, textAlign = TextAlign.Start, style = textSize, color = color
+        text = title, textAlign = TextAlign.Start, style = textSize, color = color
     )
 }
 

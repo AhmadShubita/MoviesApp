@@ -8,8 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 data class PeopleScreenState(
-        val isLoadingState: MutableState<Boolean> = mutableStateOf(true),
-        val isErrorState: MutableState<Boolean> = mutableStateOf(false),
-        val isDarkThemeEnabled: MutableState<Boolean> = mutableStateOf(false),
-        val peopleItems: Flow<PagingData<People>> = flow { }
+    val isLoadingState: MutableState<Boolean> = mutableStateOf(true),
+    val isErrorState: MutableState<Boolean> = mutableStateOf(false),
+    val peopleItems: Flow<PagingData<People>> = flow { }
 )

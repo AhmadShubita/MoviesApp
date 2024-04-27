@@ -18,7 +18,7 @@ data class DetailsItem(
     val title: String? = "",
     val video: Boolean? = false,
     val voteAverage: Double? = -0.0,
-    val voteCount: Int ? = -1
+    val voteCount: Int? = -1
 ) {
 
     val posterImageUrl get() = BuildConfig.BASE_IMAGES_URL + posterPath

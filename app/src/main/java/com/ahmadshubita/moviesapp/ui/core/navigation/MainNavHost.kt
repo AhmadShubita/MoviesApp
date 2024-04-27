@@ -26,10 +26,10 @@ fun MainNavHost(
             modifier = modifier
     ) {
         // Define the Graphs here and you can define nested graphs also.
-        moviesGraph(navController = navController, isBottomNavVisible = isBottomNavVisible, navigateToDetails = {})
-        tvGraph(navController = navController, isBottomNavVisible = isBottomNavVisible, navigateToDetails = {})
-        peopleGraph(navController = navController, isBottomNavVisible = isBottomNavVisible, navigateToDetails = {})
-        allItemsGraph(navController = navController, isBottomNavVisible = isBottomNavVisible, navigateToDetails = {})
+        moviesGraph(navController = navController, isBottomNavVisible = isBottomNavVisible)
+        tvGraph(navController = navController, isBottomNavVisible = isBottomNavVisible)
+        peopleGraph(navController = navController, isBottomNavVisible = isBottomNavVisible)
+        allItemsGraph(navController = navController, isBottomNavVisible = isBottomNavVisible)
         detailsGraph(navController = navController, isBottomNavVisible = isBottomNavVisible)
     }
 }

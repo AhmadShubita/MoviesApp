@@ -30,7 +30,7 @@ import com.ahmadshubita.moviesapp.ui.util.SnackBarStatus
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PeopleScreen(
-        navController: NavController, viewModel: PeopleViewModel = hiltViewModel()
+    navController: NavController, viewModel: PeopleViewModel = hiltViewModel()
 ) {
     val peopleScreenState by viewModel.uiState.collectAsState()
     val peopleItems = peopleScreenState.peopleItems.collectAsLazyPagingItems()
@@ -47,26 +47,27 @@ fun PeopleScreen(
     val notImplemented = stringResource(id = R.string.this_feature_not_implemented)
 
     Scaffold(
-            snackbarHost = { snackBarBuilder.SnackBarHost() },
-            containerColor = MaterialTheme.colorScheme.surface
+        snackbarHost = { snackBarBuilder.SnackBarHost() },
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         if (!peopleScreenState.isErrorState.value && !peopleScreenState.isLoadingState.value) {
-            Column(Modifier
+            Column(
+                Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface)
             ) {
                 key(peopleItems.loadState) {
                     when (peopleItems.loadState.refresh) {
                         is LoadState.Error -> {
-                            DefaultErrorLayout{
+                            DefaultErrorLayout {
                                 viewModel.onRefreshData()
                             }
                             snackBarBuilder.showSnackBar(
-                                    coroutineScope = coroutineScope,
-                                    status = SnackBarStatus.ERROR,
-                                    message = stringResource(id = R.string.some_thing_went_wrong),
-                                    throwable = null,
-                                    actionLabel = stringResource(id = R.string.retry)
+                                coroutineScope = coroutineScope,
+                                status = SnackBarStatus.ERROR,
+                                message = stringResource(id = R.string.some_thing_went_wrong),
+                                throwable = null,
+                                actionLabel = stringResource(id = R.string.retry)
                             ) {
                                 viewModel.onRefreshData()
                             }
@@ -80,38 +81,44 @@ fun PeopleScreen(
                     }
                 }
                 Row(
-                        modifier = Modifier
-                                .padding(top = dimens.space20, bottom = dimens.space20, start = dimens.space16, end = dimens.space16)
-                                .background(MaterialTheme.colorScheme.surface),
-                        verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(
+                            top = dimens.space20,
+                            bottom = dimens.space20,
+                            start = dimens.space16,
+                            end = dimens.space16
+                        )
+                        .background(MaterialTheme.colorScheme.surface),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     CategoryTitle(title = "PEOPLE", MaterialTheme.typography.titleLarge)
                 }
-                Spacer(modifier = Modifier
+                Spacer(
+                    modifier = Modifier
                         .height(10.dp)
                         .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.background))
+                        .background(MaterialTheme.colorScheme.background)
+                )
                 LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(start = dimens.space16),
-                        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(start = dimens.space16),
+                    modifier = Modifier.background(MaterialTheme.colorScheme.background)
                 ) {
                     items(peopleItems.itemCount) { item ->
-                        MainListCard(
-                                title = peopleItems[item]?.originalName ?: "",
-                                year = "",
-                                rating = peopleItems[item]?.rating ?: "",
-                                path = peopleItems[item]?.profileImageUrl ?: "",
-                                isPeople = true,
-                                isWrapContent = true,
-                                onClick = {
-                                    snackBarBuilder.showSnackBar(
-                                            coroutineScope = coroutineScope,
-                                            status = SnackBarStatus.DEFAULT,
-                                            message = notImplemented,
-                                            throwable = null,
-                                    )
-                                })
+                        MainListCard(title = peopleItems[item]?.originalName ?: "",
+                            year = "",
+                            rating = peopleItems[item]?.rating ?: "",
+                            path = peopleItems[item]?.profileImageUrl ?: "",
+                            isPeople = true,
+                            isWrapContent = true,
+                            onClick = {
+                                snackBarBuilder.showSnackBar(
+                                    coroutineScope = coroutineScope,
+                                    status = SnackBarStatus.DEFAULT,
+                                    message = notImplemented,
+                                    throwable = null,
+                                )
+                            })
                     }
 
                     when (peopleItems.loadState.append) {
@@ -132,15 +139,15 @@ fun PeopleScreen(
         } else if (peopleScreenState.isLoadingState.value) {
             DefaultProgressBar()
         } else {
-            DefaultErrorLayout{
+            DefaultErrorLayout {
                 viewModel.onRefreshData()
             }
             snackBarBuilder.showSnackBar(
-                    coroutineScope = coroutineScope,
-                    status = SnackBarStatus.ERROR,
-                    message = stringResource(id = R.string.some_thing_went_wrong),
-                    throwable = null,
-                    actionLabel = stringResource(id = R.string.retry)
+                coroutineScope = coroutineScope,
+                status = SnackBarStatus.ERROR,
+                message = stringResource(id = R.string.some_thing_went_wrong),
+                throwable = null,
+                actionLabel = stringResource(id = R.string.retry)
             ) {
                 viewModel.onRefreshData()
             }

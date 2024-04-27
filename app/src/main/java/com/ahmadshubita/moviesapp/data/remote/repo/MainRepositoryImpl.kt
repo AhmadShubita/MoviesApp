@@ -38,37 +38,27 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getNowPlayingMoviesPaging(
-        language: String,
-        page: Int
+        language: String, page: Int
     ): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(pageSize = PAGE_SIZE),
-            pagingSourceFactory = { AllItemsPagingSource(mainServices, language, false) }
-        ).flow
+        return Pager(config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = { AllItemsPagingSource(mainServices, language, false) }).flow
     }
 
     override suspend fun getPopularMoviesPaging(
-        language: String,
-        page: Int
+        language: String, page: Int
     ): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(pageSize = PAGE_SIZE),
-            pagingSourceFactory = { AllItemsPagingSource(mainServices, language, true) }
-        ).flow
+        return Pager(config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = { AllItemsPagingSource(mainServices, language, true) }).flow
     }
 
     override suspend fun getTvTopRated(language: String, page: Int): Flow<PagingData<Tv>> {
-        return Pager(
-            config = PagingConfig(pageSize = PAGE_SIZE),
-            pagingSourceFactory = { TvPagingSource(mainServices, language) }
-        ).flow
+        return Pager(config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = { TvPagingSource(mainServices, language) }).flow
     }
 
     override suspend fun getPeople(language: String, page: Int): Flow<PagingData<People>> {
-        return Pager(
-            config = PagingConfig(pageSize = PAGE_SIZE),
-            pagingSourceFactory = { PeoplePagingSource(mainServices, language) }
-        ).flow
+        return Pager(config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = { PeoplePagingSource(mainServices, language) }).flow
     }
 
     override suspend fun getMovieById(movieId: Int): DetailsItem {

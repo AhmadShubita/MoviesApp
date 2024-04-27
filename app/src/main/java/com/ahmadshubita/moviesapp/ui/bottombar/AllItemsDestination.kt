@@ -18,12 +18,12 @@ object AllItemsDestination : MainNavDestination {
 
 }
 
-fun NavGraphBuilder.allItemsGraph(navController: NavController, isBottomNavVisible: MutableState<Boolean>, navigateToDetails: () -> Unit) {
-    composable(
-            route = "${AllItemsDestination.route}/{${AllItemsScreenArgs.IS_POPULAR}}",
-            arguments = listOf(
-                    navArgument(AllItemsScreenArgs.IS_POPULAR) { defaultValue = false }
-            )) {
+fun NavGraphBuilder.allItemsGraph(
+    navController: NavController, isBottomNavVisible: MutableState<Boolean>
+) {
+    composable(route = "${AllItemsDestination.route}/{${AllItemsScreenArgs.IS_POPULAR}}",
+        arguments = listOf(navArgument(AllItemsScreenArgs.IS_POPULAR) { defaultValue = false })
+    ) {
         LaunchedEffect(key1 = null) {
             isBottomNavVisible.value = false
         }
@@ -32,7 +32,7 @@ fun NavGraphBuilder.allItemsGraph(navController: NavController, isBottomNavVisib
 }
 
 fun NavController.navigateAllItemsScreen(
-        isPopularItemsScreen: Boolean
+    isPopularItemsScreen: Boolean
 ) {
     navigate("${AllItemsDestination.route}/$isPopularItemsScreen")
 }

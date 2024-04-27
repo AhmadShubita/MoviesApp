@@ -21,36 +21,39 @@ class PeopleViewModel @Inject constructor(private val mainRepository: MainReposi
         onRefreshData()
     }
 
-     private fun getPeople() {
-        executePaging(
-            call = {mainRepository.getPeople(LANGUAGE_TYPE, 1)},
+    private fun getPeople() {
+        executePaging(call = { mainRepository.getPeople(LANGUAGE_TYPE, 1) },
             onSuccess = { response ->
                 onGetPeople(response)
             },
-            onError = { onError() }
-        )
+            onError = { onError() })
     }
 
     private fun onGetPeople(peopleList: PagingData<People>) {
         val filteredList = peopleList.filter { !it.profilePath.isNullOrBlank() }
         uiMutableState.update {
             it.copy(
-                    isLoadingState = mutableStateOf(false),
-                    isErrorState = mutableStateOf(false),
-                    peopleItems = flowOf(filteredList),
+                isLoadingState = mutableStateOf(false),
+                isErrorState = mutableStateOf(false),
+                peopleItems = flowOf(filteredList),
             )
         }
     }
 
     private fun onError() {
-        uiMutableState.update { it.copy(isLoadingState = mutableStateOf(false), isErrorState = mutableStateOf(true)) }
+        uiMutableState.update {
+            it.copy(
+                isLoadingState = mutableStateOf(false),
+                isErrorState = mutableStateOf(true)
+            )
+        }
     }
 
     fun onRefreshData() {
         getPeople()
     }
 
-    companion object{
+    companion object {
         const val LANGUAGE_TYPE = "en-US"
     }
 }

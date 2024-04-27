@@ -36,7 +36,7 @@ import com.ahmadshubita.moviesapp.ui.util.SnackBarStatus
 
 @Composable
 fun AllItemsScreen(
-        navController: NavController, viewModel: AllItemsViewModel = hiltViewModel()
+    navController: NavController, viewModel: AllItemsViewModel = hiltViewModel()
 ) {
 
     val allItemsScreenState by viewModel.uiState.collectAsState()
@@ -48,8 +48,7 @@ fun AllItemsScreen(
 
             is AllItemsUiEffect.NavigateToDetails -> {
                 navController.navigateToDetailsScreen(
-                        it.detailsType,
-                        it.id
+                    it.detailsType, it.id
                 )
             }
         }
@@ -60,7 +59,7 @@ fun AllItemsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllItemsContent(
-        state: AllItemsScreenState, viewModel: AllItemsViewModel = hiltViewModel()
+    state: AllItemsScreenState, viewModel: AllItemsViewModel = hiltViewModel()
 ) {
     val moviesItems = state.moviesItems.collectAsLazyPagingItems()
 
@@ -73,43 +72,44 @@ fun AllItemsContent(
     snackBarBuilder.snackBarHostState = remember { SnackbarHostState() }
     snackBarBuilder.ConnectivityAwareSnackBar()
 
-    Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            snackbarHost = { snackBarBuilder.SnackBarHost() },
-            topBar = {
-                TopAppBar(modifier = Modifier
-                        .wrapContentSize()
-                        .shadow(4.dp),
-                        colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.surface,
-                        ),
-                        title = {
-                            Text(
-                                    text = stringResource(id = R.string.all_items_capital),
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    style = MaterialTheme.typography.titleLarge
-                            )
-                        },
-                        navigationIcon = {
-                            IconButton(onClick = { viewModel.onClickBackButton() }) {
-                                Icon(
-                                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
-                                        contentDescription = "",
-                                        tint = MaterialTheme.colorScheme.onBackground
-                                )
-                            }
-                        })
-            },
-            containerColor = MaterialTheme.colorScheme.surface
+    Scaffold(modifier = Modifier.fillMaxSize(),
+        snackbarHost = { snackBarBuilder.SnackBarHost() },
+        topBar = {
+            TopAppBar(modifier = Modifier
+                .wrapContentSize()
+                .shadow(4.dp),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.all_items_capital),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { viewModel.onClickBackButton() }) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                })
+        },
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         if (!state.isErrorState.value && !state.isLoadingState.value) {
-            Column(Modifier
+            Column(
+                Modifier
                     .fillMaxSize()
                     .padding(it)
                     .background(MaterialTheme.colorScheme.surface)
             ) {
 
-                Spacer(modifier = Modifier
+                Spacer(
+                    modifier = Modifier
                         .height(dimens.space10)
                         .fillMaxWidth()
                         .background(MaterialTheme.colorScheme.background)
@@ -117,15 +117,15 @@ fun AllItemsContent(
                 key(moviesItems.loadState) {
                     when (moviesItems.loadState.refresh) {
                         is LoadState.Error -> {
-                            DefaultErrorLayout{
+                            DefaultErrorLayout {
                                 viewModel.onRefreshData()
                             }
                             snackBarBuilder.showSnackBar(
-                                    coroutineScope = coroutineScope,
-                                    status = SnackBarStatus.ERROR,
-                                    message = stringResource(id = R.string.some_thing_went_wrong),
-                                    throwable = null,
-                                    actionLabel = stringResource(id = R.string.retry)
+                                coroutineScope = coroutineScope,
+                                status = SnackBarStatus.ERROR,
+                                message = stringResource(id = R.string.some_thing_went_wrong),
+                                throwable = null,
+                                actionLabel = stringResource(id = R.string.retry)
                             ) {
                                 viewModel.onRefreshData()
                             }
@@ -139,21 +139,20 @@ fun AllItemsContent(
                     }
                 }
                 LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(start = dimens.space16)
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(start = dimens.space16)
                 ) {
                     items(moviesItems.itemCount) { item ->
                         MainListCard(title = moviesItems[item]?.title ?: "",
-                                year = moviesItems[item]?.releaseYear ?: "",
-                                rating = moviesItems[item]?.rating ?: "",
-                                path = moviesItems[item]?.posterImageUrl ?: "",
-                                isWrapContent = true,
-                                onClick = {
-                                    viewModel.onMovieItemClick(
-                                            DetailsType.MOVIE_DETAILS,
-                                            moviesItems[item]?.id ?: 0
-                                    )
-                                })
+                            year = moviesItems[item]?.releaseYear ?: "",
+                            rating = moviesItems[item]?.rating ?: "",
+                            path = moviesItems[item]?.posterImageUrl ?: "",
+                            isWrapContent = true,
+                            onClick = {
+                                viewModel.onMovieItemClick(
+                                    DetailsType.MOVIE_DETAILS, moviesItems[item]?.id ?: 0
+                                )
+                            })
                     }
 
                     when (moviesItems.loadState.append) {
@@ -174,15 +173,15 @@ fun AllItemsContent(
         } else if (state.isLoadingState.value) {
             DefaultProgressBar()
         } else {
-            DefaultErrorLayout{
+            DefaultErrorLayout {
                 viewModel.onRefreshData()
             }
             snackBarBuilder.showSnackBar(
-                    coroutineScope = coroutineScope,
-                    status = SnackBarStatus.ERROR,
-                    message = stringResource(id = R.string.some_thing_went_wrong),
-                    throwable = null,
-                    actionLabel = stringResource(id = R.string.retry)
+                coroutineScope = coroutineScope,
+                status = SnackBarStatus.ERROR,
+                message = stringResource(id = R.string.some_thing_went_wrong),
+                throwable = null,
+                actionLabel = stringResource(id = R.string.retry)
             ) {
                 viewModel.onRefreshData()
             }

@@ -6,7 +6,7 @@ import com.ahmadshubita.moviesapp.data.remote.core.MainServices
 
 
 abstract class BasePagingSource<value : Any>(
-        protected val mainServices: MainServices
+    protected val mainServices: MainServices
 ) : PagingSource<Int, value>() {
     protected abstract suspend fun loadData(page: Int): List<value>?
     protected abstract suspend fun getTotalPages(page: Int): Int?
@@ -16,9 +16,9 @@ abstract class BasePagingSource<value : Any>(
             val data = loadData(page) ?: emptyList()
             val totalPages = getTotalPages(page) ?: STARTING_PAGE_INDEX
             LoadResult.Page(
-                    data = data,
-                    prevKey = if (page == 1) null else page - 1,
-                    nextKey = if (page > totalPages) null else page + 1,
+                data = data,
+                prevKey = if (page == 1) null else page - 1,
+                nextKey = if (page > totalPages) null else page + 1,
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

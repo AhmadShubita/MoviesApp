@@ -12,8 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val mainRepository: MainRepository,
-    savedStateHandle: SavedStateHandle
+    private val mainRepository: MainRepository, savedStateHandle: SavedStateHandle
 ) : BaseViewModel<DetailsScreenState, DetailsUiEffect>(DetailsScreenState()) {
 
     private val detailsScreenArgs = DetailsScreenArgs(savedStateHandle)
@@ -24,21 +23,17 @@ class DetailsViewModel @Inject constructor(
 
     private fun getDetails() {
         val detailsType = detailsScreenArgs.detailsType
-        execute(
-            call = {
-                if (detailsType == DetailsType.TV_DETAILS) {
-                    mainRepository.getTvSeriesById(detailsScreenArgs.id.trim().toInt())
-                } else {
-                    mainRepository.getMovieById(detailsScreenArgs.id.trim().toInt())
-                }
-            },
-            onSuccess = { response ->
-                onGetDetails(response)
-            },
-            onError = {
-                onError()
+        execute(call = {
+            if (detailsType == DetailsType.TV_DETAILS) {
+                mainRepository.getTvSeriesById(detailsScreenArgs.id.trim().toInt())
+            } else {
+                mainRepository.getMovieById(detailsScreenArgs.id.trim().toInt())
             }
-        )
+        }, onSuccess = { response ->
+            onGetDetails(response)
+        }, onError = {
+            onError()
+        })
     }
 
     private fun onGetDetails(detailsItem: DetailsItem) {
@@ -46,7 +41,7 @@ class DetailsViewModel @Inject constructor(
             it.copy(
                 isLoadingState = mutableStateOf(false),
                 isErrorState = mutableStateOf(false),
-                detailsItem =  detailsItem
+                detailsItem = detailsItem
             )
         }
     }
@@ -54,8 +49,7 @@ class DetailsViewModel @Inject constructor(
     private fun onError() {
         uiMutableState.update {
             it.copy(
-                isLoadingState = mutableStateOf(false),
-                isErrorState = mutableStateOf(true)
+                isLoadingState = mutableStateOf(false), isErrorState = mutableStateOf(true)
             )
         }
     }

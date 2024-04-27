@@ -20,22 +20,20 @@ import com.ahmadshubita.moviesapp.ui.theme.dimens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoviesMainCard(
-        path: String, onClick: () -> Unit
+    path: String, onClick: () -> Unit
 ) {
     Card(modifier = Modifier
-            .size(width = dimens.space340, height = dimens.space170)
-            .padding(end = dimens.space12, top = dimens.space5),
-            shape = RoundedCornerShape(6.dp),
-            elevation = CardDefaults.cardElevation(dimens.space10),
-            onClick = { onClick() }
-    ) {
+        .size(width = dimens.space340, height = dimens.space170)
+        .padding(end = dimens.space12, top = dimens.space5),
+        shape = RoundedCornerShape(6.dp),
+        elevation = CardDefaults.cardElevation(dimens.space10),
+        onClick = { onClick() }) {
         Box {
             AsyncImage(
-                    path,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                            .fillMaxSize()
+                path,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
             )
         }
     }

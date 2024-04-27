@@ -6,14 +6,13 @@ import com.ahmadshubita.moviesapp.data.remote.utils.wrapApiCall
 import javax.inject.Inject
 
 class PeoplePagingSource @Inject constructor(
-        mainServices: MainServices,
-        private val language: String,
+    mainServices: MainServices,
+    private val language: String,
 ) : BasePagingSource<People>(mainServices) {
     override suspend fun loadData(page: Int): List<People> {
         return wrapApiCall {
             mainServices.getPeople(
-                    language = language,
-                    page = page
+                language = language, page = page
             )
         }.results
     }
@@ -21,8 +20,7 @@ class PeoplePagingSource @Inject constructor(
     override suspend fun getTotalPages(page: Int): Int {
         return wrapApiCall {
             mainServices.getPeople(
-                    language = language,
-                    page = page
+                language = language, page = page
             )
         }.totalPages
     }

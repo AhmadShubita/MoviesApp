@@ -16,9 +16,12 @@ object TvDestination : MainNavDestination {
 
 }
 
-fun NavGraphBuilder.tvGraph(navController: NavController, isBottomNavVisible: MutableState<Boolean>, navigateToDetails: () -> Unit){
-    composable(route = TvDestination.route){
-        LaunchedEffect(key1 = null ){
+fun NavGraphBuilder.tvGraph(
+    navController: NavController,
+    isBottomNavVisible: MutableState<Boolean>,
+) {
+    composable(route = TvDestination.route) {
+        LaunchedEffect(key1 = null) {
             isBottomNavVisible.value = true
         }
         TvScreen(navController = navController)

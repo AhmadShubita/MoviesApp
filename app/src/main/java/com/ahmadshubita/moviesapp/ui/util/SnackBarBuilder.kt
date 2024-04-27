@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.ahmadshubita.moviesapp.R
 import kotlinx.coroutines.CoroutineScope
@@ -51,7 +50,7 @@ class SnackBarBuilder(var snackBarHostState: SnackbarHostState? = null) {
         var initialComposition by remember { mutableStateOf(true) }
 
         val connectivityManager =
-                LocalContext.current.getSystemService(ConnectivityManager::class.java)
+            LocalContext.current.getSystemService(ConnectivityManager::class.java)
 
         DisposableEffect(connectivityManager) {
             val networkCallback = object : ConnectivityManager.NetworkCallback() {
@@ -79,16 +78,16 @@ class SnackBarBuilder(var snackBarHostState: SnackbarHostState? = null) {
             if (!initialComposition) {
                 if (!isNetworkAvailable) {
                     showSnackBar(
-                            coroutineScope,
-                            SnackBarStatus.ERROR,
-                            noInternetMessage,
-                            duration = SnackbarDuration.Indefinite
+                        coroutineScope,
+                        SnackBarStatus.ERROR,
+                        noInternetMessage,
+                        duration = SnackbarDuration.Indefinite
                     )
                 } else {
                     showSnackBar(
-                            coroutineScope,
-                            SnackBarStatus.SUCCESS,
-                            connectedMessage
+                        coroutineScope,
+                        SnackBarStatus.SUCCESS,
+                        connectedMessage
                     )
                 }
             }
@@ -101,13 +100,13 @@ class SnackBarBuilder(var snackBarHostState: SnackbarHostState? = null) {
     }
 
     fun showSnackBar(
-            coroutineScope: CoroutineScope,
-            status: SnackBarStatus,
-            message: String?,
-            throwable: Throwable? = null,
-            duration: SnackbarDuration = SnackbarDuration.Short,
-            actionLabel: String? = null,
-            retryCallback: (() -> Unit)? = null
+        coroutineScope: CoroutineScope,
+        status: SnackBarStatus,
+        message: String?,
+        throwable: Throwable? = null,
+        duration: SnackbarDuration = SnackbarDuration.Short,
+        actionLabel: String? = null,
+        retryCallback: (() -> Unit)? = null
     ) {
         snackBarStatus = status
 
@@ -117,14 +116,13 @@ class SnackBarBuilder(var snackBarHostState: SnackbarHostState? = null) {
         }
 
 
-        // rememberCoroutinesScope is used here instead of LaunchedEffect because we need to use the snack bar outside the composable scope such
-        // as in a bottom sheet
+        // rememberCoroutinesScope is used here instead of LaunchedEffect because we need to use the snack bar outside the composable scope
         coroutineScope.launch {
             val result = snackBarHostState?.showSnackbar(
-                    message = (if (throwable == null || throwable.message.isNullOrEmpty()) message.toString() else apiErrorMessage),
-                    actionLabel = if (retryCallback != null) actionLabel else null,
-                    withDismissAction = retryCallback != null,
-                    duration = if (retryCallback != null) SnackbarDuration.Indefinite else duration
+                message = (if (throwable == null || throwable.message.isNullOrEmpty()) message.toString() else apiErrorMessage),
+                actionLabel = if (retryCallback != null) actionLabel else null,
+                withDismissAction = retryCallback != null,
+                duration = if (retryCallback != null) SnackbarDuration.Indefinite else duration
             )
             if (result == SnackbarResult.ActionPerformed) {
                 retryCallback?.invoke()
@@ -135,14 +133,14 @@ class SnackBarBuilder(var snackBarHostState: SnackbarHostState? = null) {
     @Composable
     private fun SnackBar(snackBarData: SnackbarData) {
         Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
         ) {
             Snackbar(
-                    modifier = Modifier.wrapContentSize(),
-                    snackbarData = snackBarData,
-                    containerColor = snackBarBackgroundColor,
-                    actionColor = MaterialTheme.colorScheme.onError
+                modifier = Modifier.wrapContentSize(),
+                snackbarData = snackBarData,
+                containerColor = snackBarBackgroundColor,
+                actionColor = MaterialTheme.colorScheme.onError
             )
         }
     }

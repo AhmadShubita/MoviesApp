@@ -6,21 +6,19 @@ import com.ahmadshubita.moviesapp.data.remote.utils.wrapApiCall
 import javax.inject.Inject
 
 class AllItemsPagingSource @Inject constructor(
-        mainServices: MainServices,
-        private val language: String,
-        private val isPopularItemScreen: Boolean
+    mainServices: MainServices,
+    private val language: String,
+    private val isPopularItemScreen: Boolean
 ) : BasePagingSource<Movie>(mainServices) {
     override suspend fun loadData(page: Int): List<Movie> {
         return wrapApiCall {
-            if(isPopularItemScreen) {
+            if (isPopularItemScreen) {
                 mainServices.getPopularMovies(
-                        language = language,
-                        page = page
+                    language = language, page = page
                 )
-            }else {
+            } else {
                 mainServices.getUpcomingMovies(
-                        language = language,
-                        page = page
+                    language = language, page = page
                 )
             }
         }.results
@@ -28,15 +26,13 @@ class AllItemsPagingSource @Inject constructor(
 
     override suspend fun getTotalPages(page: Int): Int {
         return wrapApiCall {
-            if(isPopularItemScreen) {
+            if (isPopularItemScreen) {
                 mainServices.getPopularMovies(
-                        language = language,
-                        page = page
+                    language = language, page = page
                 )
-            }else {
+            } else {
                 mainServices.getUpcomingMovies(
-                        language = language,
-                        page = page
+                    language = language, page = page
                 )
             }
         }.totalPages

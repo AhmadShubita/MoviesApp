@@ -15,12 +15,14 @@ object MoviesDestination : MainNavDestination {
         get() = "movies_destinations"
 }
 
-fun NavGraphBuilder.moviesGraph(navController: NavController, isBottomNavVisible: MutableState<Boolean>, navigateToDetails: () -> Unit){
-    composable(route = MoviesDestination.route){
-        LaunchedEffect(key1 = null ){
+fun NavGraphBuilder.moviesGraph(
+    navController: NavController,
+    isBottomNavVisible: MutableState<Boolean>,
+) {
+    composable(route = MoviesDestination.route) {
+        LaunchedEffect(key1 = null) {
             isBottomNavVisible.value = true
         }
-        // TODO adding the route for movies screen and passing require data.
         MoviesScreen(navController = navController)
     }
 }

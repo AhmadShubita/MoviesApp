@@ -5,5 +5,5 @@ import com.ahmadshubita.moviesapp.ui.bottombar.DetailsType
 
 interface AllItemsUiEffect : BaseViewModel.BaseUiEffect {
     object NavigateBack : AllItemsUiEffect
-    data class NavigateToDetails(val detailsType: DetailsType, val id: String): AllItemsUiEffect
+    data class NavigateToDetails(val detailsType: DetailsType, val id: String) : AllItemsUiEffect
 }

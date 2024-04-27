@@ -18,15 +18,13 @@ object DetailsDestination : MainNavDestination {
 }
 
 fun NavGraphBuilder.detailsGraph(
-    navController: NavController,
-    isBottomNavVisible: MutableState<Boolean>
+    navController: NavController, isBottomNavVisible: MutableState<Boolean>
 ) {
     composable(
         route = "${DetailsDestination.route}/{${DetailsScreenArgs.DETAILS_TYPE}},{${DetailsScreenArgs.ID}}",
-        arguments = listOf(
-            navArgument(DetailsScreenArgs.DETAILS_TYPE) { defaultValue = DetailsType.MOVIE_DETAILS },
-            navArgument(DetailsScreenArgs.ID) {}
-        ),
+        arguments = listOf(navArgument(DetailsScreenArgs.DETAILS_TYPE) {
+            defaultValue = DetailsType.MOVIE_DETAILS
+        }, navArgument(DetailsScreenArgs.ID) {}),
     ) {
         LaunchedEffect(key1 = null) {
             isBottomNavVisible.value = false
@@ -42,7 +40,6 @@ fun NavController.navigateToDetailsScreen(
 }
 
 enum class DetailsType {
-    TV_DETAILS,
-    MOVIE_DETAILS
+    TV_DETAILS, MOVIE_DETAILS
 }
 
