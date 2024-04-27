@@ -30,23 +30,22 @@ The project is structured using Clean Architecture, separating concerns into lay
 
 ## Features
 
-- ### Movies Screen
+### 1- Movies Screen
 
-- - #### Top Rated Movies Section
+- #### Top Rated Movies Section
 
-- - #### Upcoming Movies Section
+- #### Upcoming Movies Section
 
-- - #### Popular Movies Section
+- #### Popular Movies Section
 
-- - #### Dark/Light Mode Switcher
+- #### Dark/Light Mode Switcher
 
-- ### Tv Series Screen
+### 2- Tv Series Screen
+### 3- People Screen
 
-- ### People Screen
+### 4- Details
 
-- ### Details
-
-- ### View All Screen
+### 5- View All Screen
 
 ## Technologies Used
 
