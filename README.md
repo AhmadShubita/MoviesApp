@@ -6,7 +6,7 @@ Movies App is an Android application built using Kotlin and Jetpack Compose, fol
 
 <table>
   <tr>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Home%20Page.png" alt="image1"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/assets/25340380/d3e48dee-ed63-491a-915e-0a1b4ebd2a62" alt="image1"></td>
     <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Home2%20Page.png" alt="image2"></td>  </tr>
   <tr>
     <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Tv%20Page.png" alt="image4"></td>
