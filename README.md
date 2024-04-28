@@ -7,14 +7,14 @@ Movies App is an Android application built using Kotlin and Jetpack Compose, fol
 <table>
   <tr>
     <td><img src="https://github.com/AhmadShubita/MoviesApp/assets/25340380/d3e48dee-ed63-491a-915e-0a1b4ebd2a62" alt="image1"></td>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Home2%20Page.png" alt="image2"></td>  </tr>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/assets/25340380/9630bc64-a454-4f22-b403-b0703a1d83e4" alt="image2"></td>  </tr>
   <tr>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Tv%20Page.png" alt="image4"></td>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/People%20Screen.png" alt="image5"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/assets/25340380/2a2051c7-a236-42de-8642-1bfcf2cc5c4c" alt="image4"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/assets/25340380/dc763584-254a-439c-8358-7e1ca5c73e1d" alt="image5"></td>
   </tr>
   <tr>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/Details%20Screen.png" alt="image7"></td>
-    <td><img src="https://github.com/AhmadShubita/MoviesApp/blob/main/All%20Movies.png" alt="image8"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/assets/25340380/c541b5cf-46f5-40dc-bb72-6cb2246eea71" alt="image7"></td>
+    <td><img src="https://github.com/AhmadShubita/MoviesApp/assets/25340380/989f8c17-9855-4675-bcea-3ec13f6048a4" alt="image8"></td>
   </tr>
 </table>
 
